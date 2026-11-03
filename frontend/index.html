@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>知源学伴 · AI辅助学习系统</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" defer></script>
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="logo"><span class="logo-icon">📚</span><span>知源学伴</span><span class="logo-sub">AI 辅助学习</span></div>
+    <nav id="nav"></nav>
+    <div id="sidebar-foot">
+      <div id="student-box">
+        <label>学习档案</label>
+        <div class="row">
+          <select id="student-select"></select>
+          <button id="btn-add-student" title="新建档案">＋</button>
+        </div>
+      </div>
+      <div id="llm-badge" class="badge-off" title="点击打开接入设置">● 离线演示模式</div>
+      <button id="btn-settings" style="margin-top:8px;width:100%;border:none;border-radius:8px;padding:7px;background:#2c3a63;color:#fff;cursor:pointer;font-size:13px">⚙ 接入设置 / API</button>
+      <button id="btn-tour" style="margin-top:6px;width:100%;border:none;border-radius:8px;padding:6px;background:transparent;color:#9fb0d8;cursor:pointer;font-size:12px">❓ 新手引导</button>
+    </div>
+  </aside>
+  <main id="main"><div class="loading">加载中…</div></main>
+</div>
+
+<div id="settings-modal" style="display:none;position:fixed;inset:0;background:rgba(10,15,30,.55);z-index:50;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto">
+  <div style="background:#fff;border-radius:14px;max-width:640px;width:100%;padding:22px 24px">
+    <div class="rowline" style="justify-content:space-between">
+      <h3 style="margin:0">⚙ 接入设置</h3>
+      <button class="btn small ghost" id="settings-close">关闭</button>
+    </div>
+    <p class="muted" style="margin:8px 0 0">选择大模型服务商并填入 API Key（Key 仅保存在本机 config.json）。不接入也可使用离线模式 + 免费联网搜索。</p>
+    <label class="f">服务商预设</label>
+    <select id="cfg-preset">
+      <option value="zhipu">智谱 GLM（glm-4-flash 网页注册即免费 / glm-4v-flash 视觉免费）</option>
+      <option value="siliconflow">硅基流动 SiliconFlow（注册送额度，Qwen 系列）</option>
+      <option value="deepseek">DeepSeek（官方API，需充值）</option>
+      <option value="qwen">通义千问（阿里云百炼）</option>
+      <option value="ollama">本地 Ollama（完全免费，需本机安装）</option>
+      <option value="custom">自定义（任意 OpenAI 兼容接口）</option>
+    </select>
+    <label class="f">接口地址 base_url</label>
+    <input type="text" id="cfg-base" placeholder="https://open.bigmodel.cn/api/paas/v4">
+    <label class="f">API Key（留空 = 保留已保存的 Key）</label>
+    <input type="text" id="cfg-key" placeholder="粘贴你的 API Key">
+    <div class="grid c2">
+      <div><label class="f">对话模型 model</label><input type="text" id="cfg-model" placeholder="glm-4-flash"></div>
+      <div><label class="f">视觉模型 vision_model（读图题/手写）</label><input type="text" id="cfg-vmodel" placeholder="glm-4v-flash"></div>
+    </div>
+    <label class="f">联网搜索（可选）博查 API Key（不填则自动使用免Key的 Bing 检索）</label>
+    <input type="text" id="cfg-skey" placeholder="bocha api key">
+    <div class="mt rowline">
+      <button class="btn" id="cfg-save">保存</button>
+      <button class="btn ghost" id="cfg-test">测试连接</button>
+      <button class="btn ghost" id="cfg-backup" title="把全部学生数据（档案/错题/积分/讲义）导出为 zip">⬇ 备份数据</button>
+      <span id="cfg-test-result" class="muted"></span>
+    </div>
+    <div class="mt muted" id="cfg-links" style="line-height:1.8"></div>
+    <div class="mt" id="cfg-channels" style="font-size:12px;line-height:1.9"></div>
+    <div class="mt muted" style="font-size:12px;border-top:1px solid #eef0f6;padding-top:8px">🔒 你保存的自定义 Key 只存在你自己的账号下（按账号隔离），其他人不可见、不可用；不填则使用系统免费通道。</div>
+  </div>
+</div>
+<div id="toast"></div>
+<script src="/app.js"></script>
+</body>
+</html>

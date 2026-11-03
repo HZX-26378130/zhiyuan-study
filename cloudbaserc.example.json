@@ -1,0 +1,19 @@
+{
+  "$schema": "https://static.cloudbase.net/cli/cloudbaserc.schema.json",
+  "envId": "<你的 CloudBase 环境 ID>",
+  "functionRoot": "cloudbase/functions",
+  "functions": [
+    {
+      "name": "db-proxy",
+      "timeout": 60,
+      "runtime": "Nodejs16.13",
+      "installDependency": true,
+      "envVariables": {
+        "ACCESS_TOKEN": "<云函数内部校验用令牌：自己随机生成一串，勿提交到仓库>"
+      }
+    }
+  ],
+  "cloudrun": {
+    "name": "zhiyuan-study"
+  }
+}

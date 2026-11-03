@@ -1,0 +1,39 @@
+# 运行时数据与本地配置（绝不入库）
+config.json
+data/db/
+data/materials/
+*.log
+
+# CloudBase 部署配置：含函数 ACCESS_TOKEN，用 cloudbaserc.example.json 作模板
+cloudbaserc.json
+cloudbase/functions/*/config.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 归档的临时文件/旧项目副本
+_archive/
+
+# 备份产物（backup-from-vm.ps1 的输出目录）
+backups/
+
+# 记录 VM 公网 IP（本机信息，不入库）
+deploy/windows/vm-host.txt
+
+# cloudflared 可执行文件（52 MB，由 tunnel.ps1 自动下载）
+deploy/windows/bin/
+
+# exe 打包产物与构建环境（体积大，不入库）
+.build-venv/
+build/
+dist/
+*.spec.bak
+packaging/icon.ico
+
+# 编辑器/系统
+.zcode/
+.vscode/
+.DS_Store
+Thumbs.db

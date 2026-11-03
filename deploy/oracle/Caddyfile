@@ -1,0 +1,44 @@
+# 知源学伴 · Caddy 反向代理（可选，用于 HTTPS + 域名）
+#
+# 前提：域名 A 记录已指向本机公网 IP，且 VCN 安全列表放行了 80/443。
+# 用法：
+#   sudo apt install -y caddy        # 或按官方源安装，见 README
+#   sudo cp Caddyfile /etc/caddy/Caddyfile
+#   sudo sed -i 's/你的域名/study.example.com/' /etc/caddy/Caddyfile
+#   sudo systemctl reload caddy
+#
+# 改用 Caddy 之后，把 /opt/zhiyuan-study/.env 里的 ZY_HOST 改成 127.0.0.1，
+# 让 Python 只监听本机，由 Caddy 对外提供 HTTPS：
+#   sudo sed -i 's/^ZY_HOST=.*/ZY_HOST=127.0.0.1/' /opt/zhiyuan-study/.env
+#   sudo systemctl restart zhiyuan-study
+
+你的域名 {
+	encode zstd gzip
+
+	# 流式问答（SSE）必须关掉缓冲，否则前端看不到"边生成边显示"
+	@stream path /api/qa/stream
+	handle @stream {
+		reverse_proxy 127.0.0.1:8765 {
+			flush_interval -1
+		}
+	}
+
+	handle {
+		reverse_proxy 127.0.0.1:8765
+	}
+
+	# 安全响应头
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options SAMEORIGIN
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+
+	log {
+		output file /var/log/caddy/zhiyuan-study.log {
+			roll_size 10mb
+			roll_keep 3
+		}
+	}
+}

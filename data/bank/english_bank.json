@@ -1,0 +1,242 @@
+{
+  "writing_prompts": [
+    {
+      "id": "w_c4_1",
+      "level": "cet4",
+      "tag": "自编",
+      "topic_cn": "小习惯的力量",
+      "directions": "For this part, you are allowed 30 minutes to write an essay on the importance of developing small habits. You should write at least 120 words but no more than 180 words.",
+      "model_essay": "It is universally acknowledged that great achievements often grow out of small, consistent habits. Just as a tiny seed gradually grows into a towering tree, small daily routines accumulate into remarkable personal growth over time. To begin with, small habits lower the threshold of action. Reading ten pages a day or jogging for fifteen minutes sounds easy, which makes it far more likely that we will persist. Moreover, habits shape our identity: what we do repeatedly quietly defines who we are. A student who reviews notes every evening, for example, will naturally build solid knowledge without feeling overwhelmed. Admittedly, the effect of a single small action seems negligible. However, compounded over months and years, its power is enormous. Therefore, instead of waiting for motivation or dramatic change, we should start with something small today, stick to it patiently, and let time do the multiplication.",
+      "useful_expressions": [
+        "It is universally acknowledged that... 众所周知",
+        "lower the threshold of action 降低行动门槛",
+        "compounded over months and years 经年累月叠加",
+        "let time do the multiplication 让时间做乘法"
+      ]
+    },
+    {
+      "id": "w_c4_2",
+      "level": "cet4",
+      "tag": "自编",
+      "topic_cn": "大学生是否应该做兼职",
+      "directions": "For this part, you are allowed 30 minutes to write an essay on whether college students should take part-time jobs. You should write at least 120 words but no more than 180 words.",
+      "model_essay": "Whether college students should take part-time jobs has long been a heated topic. From my perspective, a well-chosen part-time job can be highly rewarding, provided that it does not interfere with study. On the one hand, part-time jobs offer what classrooms can hardly provide: real-world experience, time management skills and financial independence. A student who tutors mathematics, for instance, not only earns money but also deepens his own understanding. On the other hand, the primary mission of college students is learning. If a part-time job occupies too much time and energy, grades will inevitably suffer, which defeats the purpose of higher education. Therefore, the key lies in balance. Students should treat part-time work as a supplement rather than a substitute for study, choosing jobs related to their major or interest. Only in this way can we harvest both experience and knowledge from campus life.",
+      "useful_expressions": [
+        "has long been a heated topic 一直是热议话题",
+        "provided that... 只要/前提是",
+        "a supplement rather than a substitute 补充而非替代",
+        "Only in this way can we... 倒装强调句"
+      ]
+    },
+    {
+      "id": "w_c6_1",
+      "level": "cet6",
+      "tag": "自编",
+      "topic_cn": "人工智能对高等教育的影响",
+      "directions": "For this part, you are allowed 30 minutes to write an essay on the impact of artificial intelligence on higher education. You should write at least 150 words but no more than 200 words.",
+      "model_essay": "With the rapid advance of artificial intelligence, higher education is undergoing a profound transformation. While some worry that AI may weaken students' ability to think independently, I am convinced that AI, if properly guided, serves as a powerful catalyst for deeper learning rather than a shortcut for intellectual laziness. Admittedly, the temptation to let AI finish assignments is real. When students copy answers without understanding, they forfeit the very process that education is designed to cultivate. Nevertheless, the same technology, used reflectively, can personalize learning in unprecedented ways. Intelligent tutoring systems can diagnose a learner's weak points, generate targeted exercises and offer instant feedback, functions that a professor with two hundred students could hardly provide in person. The conclusion, then, depends not on the technology itself but on how we use it. Universities should integrate AI literacy into curricula, teaching students to question, verify and improve upon AI output. Used with such discipline, AI will widen, not narrow, the path to genuine knowledge.",
+      "useful_expressions": [
+        "undergo a profound transformation 经历深刻变革",
+        "a powerful catalyst for... 强大的催化剂",
+        "forfeit the very process 丧失了这一过程本身",
+        "not on A but on B 不取决于A而取决于B"
+      ]
+    },
+    {
+      "id": "w_c6_2",
+      "level": "cet6",
+      "tag": "自编",
+      "topic_cn": "年轻人为什么要读经典",
+      "directions": "For this part, you are allowed 30 minutes to write an essay on why young people should read classics. You should write at least 150 words but no more than 200 words.",
+      "model_essay": "In an age dominated by short videos and fragmented information, classics may appear slow and out of fashion. Yet I would argue that precisely because of this information flood, reading classics has become more, not less, essential for young people. To begin with, classics offer depth that fragmented reading can never match. A tweet tells us what happened; Tolstoy or Confucius tells us why human beings behave the way they do. Furthermore, classics function as an intellectual anchor. When opinions change overnight on social media, the great books provide stable standards of beauty, morality and truth against which we can measure the passing noise. Finally, reading classics is an exercise in patience and sustained attention, abilities that are quietly eroding in the digital era and that remain the foundation of serious thinking. In short, classics are not a burden but a pair of spectacles through which the modern world becomes clearer. Young people who climb these mountains once will thereafter see everything below with sharper eyes.",
+      "useful_expressions": [
+        "an age dominated by... 被……主导的时代",
+        "more, not less, essential 更重要而非更不重要",
+        "an intellectual anchor 思想的锚",
+        "a pair of spectacles through which... 一副透过它看得更清的眼镜"
+      ]
+    },
+    {
+      "id": "w_r2025a_1",
+      "level": "cet4",
+      "tag": "真题",
+      "year": "2025年6月",
+      "topic_cn": "对AI辅助学习的看法（校园调查）",
+      "directions": "For this part, you are allowed 30 minutes to write an essay. Suppose your university is conducting a survey to collect students' opinions on the proper use of AI technology to assist learning. You should write at least 120 words but no more than 180 words.",
+      "model_essay": "Recently, our university has launched a survey on how students should properly use AI technology to assist learning. As for me, AI is a powerful learning partner, but only when we remain the masters of our own thinking. Admittedly, AI brings real benefits. It can explain confusing concepts patiently, generate practice questions tailored to our weak points and offer instant feedback, which greatly improves learning efficiency. However, the misuse of AI is equally real. Some students simply copy its answers without thinking, and gradually they lose the ability to analyze problems independently, which defeats the very purpose of education. Therefore, I suggest a balanced approach. We should treat AI as a tutor rather than a substitute: first try problems by ourselves, then use AI to check, question and deepen our understanding. In this way, technology will sharpen rather than replace our minds.",
+      "useful_expressions": [
+        "launch a survey 发起调查",
+        "a tutor rather than a substitute 是导师而非替代品",
+        "tailored to our weak points 针对薄弱点定制",
+        "sharpen rather than replace our minds 磨砺而非取代我们的头脑"
+      ]
+    },
+    {
+      "id": "w_r2024b_1",
+      "level": "cet4",
+      "tag": "真题",
+      "year": "2024年12月",
+      "topic_cn": "商学院校园调查建议",
+      "directions": "For this part, you are allowed 30 minutes to write an essay. Suppose the business school of your university is conducting a survey on students' reading habits. You should write at least 120 words but no more than 180 words.",
+      "model_essay": "The business school of our university is currently conducting a survey on students' reading habits, and I would like to share my observations and suggestions. According to my own experience, digital devices have fundamentally changed the way students read. We spend hours scrolling through short passages on screens, while complete books are left untouched on the shelf. This fragmented reading style limits our ability to think deeply about complex issues, which is precisely what business studies demands. To improve the situation, I propose two measures. First, the school could organize monthly book-reading circles, where students exchange ideas about a complete work. Second, reading goals should be included in our semester plans, with modest but regular targets such as one book every two months. Deep reading is not a luxury but a necessity; it lays the intellectual foundation on which professional skills will later be built.",
+      "useful_expressions": [
+        "fragmented reading style 碎片化阅读方式",
+        "I propose two measures 我提出两项措施",
+        "modest but regular targets 适度而规律的目标",
+        "lay the intellectual foundation 奠定思想基础"
+      ]
+    },
+    {
+      "id": "w_r2024b_2",
+      "level": "cet4",
+      "tag": "真题",
+      "year": "2024年12月",
+      "topic_cn": "丰富学生传统文化知识（校报撰稿）",
+      "directions": "For this part, you are allowed 30 minutes to write an essay. The campus newspaper invites articles on how to enrich students' knowledge of traditional Chinese culture. You should write at least 120 words but no more than 180 words.",
+      "model_essay": "Traditional Chinese culture is a treasure house of wisdom, yet many students today know more about foreign pop stars than about the classics written in their own language. Enriching our knowledge of traditional culture, therefore, deserves immediate attention. Campus activities can play a leading role. For instance, calligraphy workshops, poetry recitation contests and traditional festival fairs allow students to experience culture rather than merely memorize facts about it. Course design matters as well: general education classes on Chinese philosophy, art and history should be made more interactive, linking ancient ideas to modern life so that students can feel their relevance. Most importantly, curiosity must come from within. When we approach the classics with genuine questions instead of treating them as exam material, five thousand years of culture stops being a burden and becomes a source of confidence and creativity.",
+      "useful_expressions": [
+        "a treasure house of wisdom 智慧宝库",
+        "experience culture rather than merely memorize facts 体验文化而非死记知识",
+        "link ancient ideas to modern life 将古代思想与现代生活相连",
+        "a source of confidence and creativity 自信与创造力之源"
+      ]
+    },
+    {
+      "id": "w_r2024b_6",
+      "level": "cet6",
+      "tag": "真题",
+      "year": "2024年12月",
+      "topic_cn": "学会如何学习",
+      "directions": "For this part, you are allowed 30 minutes to write an essay. One important goal of education is to help students learn how to learn. You should write at least 150 words but no more than 200 words.",
+      "model_essay": "Education is often measured by how much knowledge students have absorbed. Yet in an era when facts are instantly searchable, the more important goal of education is to teach students how to learn. Learning how to learn means mastering methods before memorizing conclusions. A student who understands why a formula works can rebuild it on any exam; one who has merely memorized it will be helpless once the problem changes shape. It also means developing the habit of self-diagnosis: identifying what we do not understand, designing targeted practice, and reflecting on our mistakes instead of merely collecting more exercises. Finally, it means maintaining curiosity after graduation, because the knowledge of today will inevitably be renewed tomorrow. Schools should therefore devote more class time to metacognitive skills, such as planning, self-testing and error analysis. When students leave campus carrying not just knowledge but the ability to renew it, education has achieved its true purpose.",
+      "useful_expressions": [
+        "the more important goal is to... 更重要的目标是",
+        "mastering methods before memorizing conclusions 先掌握方法再记结论",
+        "the habit of self-diagnosis 自我诊断的习惯",
+        "metacognitive skills 元认知能力"
+      ]
+    }
+  ],
+  "translation_items": [
+    {
+      "id": "t_c4_1",
+      "level": "cet4",
+      "tag": "自编",
+      "topic": "中国高铁",
+      "source_cn": "高铁在中国的快速发展令人瞩目。目前，中国高铁运营里程已超过四万公里，居世界第一。高铁不仅缩短了城市之间的时空距离，还带动了沿线地区的经济发展。乘坐高铁出行，已经成为许多人日常生活的组成部分。为了给乘客提供更好的服务，铁路部门不断改进购票系统，并推出了刷身份证进站、在线选座等便利措施。",
+      "reference_en": "The rapid development of high-speed railways in China has attracted worldwide attention. At present, the operating mileage of China's high-speed railways has exceeded 40,000 kilometers, ranking first in the world. High-speed trains have not only shortened the distance between cities in time and space, but also promoted the economic development of regions along the lines. Traveling by high-speed rail has become part of many people's daily life. To provide passengers with better services, the railway authorities have kept improving the ticketing system and introduced convenient measures such as entering stations with ID cards and selecting seats online.",
+      "key_points": ["operating mileage 运营里程", "rank first 居首位", "promote the economic development 带动经济发展", "railway authorities 铁路部门"],
+      "common_mistakes": ["里程误译成 distance 而非 mileage", "不仅…还… 用 not only...but also 时语序易错", "刷身份证进站写成 brush ID card"]
+    },
+    {
+      "id": "t_r2024a_1",
+      "level": "cet4",
+      "tag": "真题",
+      "year": "2024年6月",
+      "topic": "四合院",
+      "source_cn": "四合院是中国一种传统的住宅建筑，其特点是房屋建造在一个院子的四周，将院子合围在中间。四合院通常冬暖夏凉，环境舒适，尤其适合大家庭居住。中国各地有各种四合院，其中以北京的四合院最为典型。如今，随着城市改造的推进，大量的四合院消失了。为了保护这一传统建筑形式，许多四合院被列为文物保护单位。",
+      "reference_en": "The siheyuan, a traditional Chinese residence, is characterized by houses built around a courtyard, which is enclosed in the middle. With warm winters and cool summers, it offers a comfortable living environment and is especially suitable for large families. Various siheyuans can be found across China, among which those in Beijing are the most typical. Nowadays, with the advance of urban reconstruction, a large number of siheyuans have disappeared. To protect this traditional form of architecture, many siheyuans have been listed as cultural heritage sites under state protection.",
+      "key_points": ["be characterized by 特点是", "enclose 合围", "urban reconstruction 城市改造", "be listed as cultural heritage 被列为文物"],
+      "common_mistakes": ["四合院可音译 siheyuan 后需解释", "冬暖夏凉写成 winter warm summer cool", "文物保护单位误译成 cultural relic company"]
+    },
+    {
+      "id": "t_r2024a_2",
+      "level": "cet4",
+      "tag": "真题",
+      "year": "2024年6月",
+      "topic": "农历",
+      "source_cn": "农历起源于数千年前，是中国人根据太阳和月亮的运行规律制定的传统历法。因为使用阴历和阳历相结合的方式，农历能够清楚地反映四季变化，指导农业生产。中国传统的春节、端午节、中秋节等节日都依据农历来确定日期。直到今天，农历仍然在中国人的生产生活中发挥着重要作用，许多传统习俗也都与农历密切相关。",
+      "reference_en": "Originating thousands of years ago, the lunar calendar is a traditional Chinese calendar formulated according to the movement patterns of the sun and the moon. By combining lunar and solar calculations, it clearly reflects the changes of the four seasons and guides agricultural production. Traditional Chinese festivals such as the Spring Festival, the Dragon Boat Festival and the Mid-Autumn Festival all have their dates determined by the lunar calendar. Even today, the lunar calendar still plays an important role in the production and life of Chinese people, and many traditional customs are closely related to it.",
+      "key_points": ["originate 起源", "be formulated according to 依据……制定", "guide agricultural production 指导农业生产", "play an important role 发挥重要作用"],
+      "common_mistakes": ["农历误译成 farm calendar（应为 lunar calendar）", "起源写成 come from thousands years ago", "日期确定漏被动语态"]
+    },
+    {
+      "id": "t_r2024a_3",
+      "level": "cet4",
+      "tag": "真题",
+      "year": "2024年6月",
+      "topic": "汉字“福”",
+      "source_cn": "汉语中的“福”字表示幸福和好运，是中国传统文化中最常用的吉祥字符之一。人们常常将“福”字倒贴在门上，寓意“福到了”。春节期间，写福字、贴福字是家家户户的重要活动。此外，“福”字还常出现在各种装饰品和礼品上，表达人们对美好生活的向往。可以说，“福”文化已经深深融入中国人的日常生活。",
+      "reference_en": "In Chinese, the character \"fu\" means happiness and good luck, and it is one of the most commonly used auspicious symbols in traditional Chinese culture. People often paste the character upside down on doors, implying that \"fortune has arrived\". During the Spring Festival, writing and pasting the character \"fu\" is an important activity in every household. In addition, the character often appears on various decorations and gifts, expressing people's aspiration for a better life. It can be said that the culture of \"fu\" has been deeply integrated into the daily life of Chinese people.",
+      "key_points": ["auspicious symbol 吉祥符号", "upside down 倒着", "imply 寓意", "aspiration for a better life 对美好生活的向往"],
+      "common_mistakes": ["倒贴写成 stick reversely", "吉祥写成 lucky（更地道用 auspicious）", "引号内词重复时冠词处理混乱"]
+    },
+    {
+      "id": "t_r2025a_3",
+      "level": "cet4",
+      "tag": "真题",
+      "year": "2025年6月",
+      "topic": "15分钟便民生活圈",
+      "source_cn": "近年来，中国越来越多的城市着力打造“15分钟便民生活圈”。社区居民步行15分钟，就能享受到日常所需的公共服务。生活圈内配备便利店、公园、健身设施、图书馆、学校、社区食堂和诊所等。这一举措大大方便了居民的生活，提升了他们的幸福感。未来，中国还将建设更多这样的社区，让城市发展成果更好地惠及全体人民。",
+      "reference_en": "In recent years, more and more Chinese cities have been striving to build \"15-minute convenience living circles\", where community residents can enjoy the public services they need for daily life within a 15-minute walk. These circles are equipped with convenience stores, parks, fitness facilities, libraries, schools, community canteens and clinics. This initiative has greatly facilitated residents' lives and enhanced their sense of happiness. In the future, China will build more such communities, so that the fruits of urban development can better benefit all the people.",
+      "key_points": ["strive to do 着力做", "be equipped with 配备", "sense of happiness 幸福感", "benefit all the people 惠及全体人民"],
+      "common_mistakes": ["便民生活圈直译成 convenient life circle", "步行15分钟用 within a 15-minute walk", "举措误译成 move（应为 initiative/measure）"]
+    },
+    {
+      "id": "t_r2025a_1",
+      "level": "cet4",
+      "tag": "真题主题",
+      "year": "2025年6月",
+      "topic": "袁隆平",
+      "source_cn": "袁隆平被誉为“杂交水稻之父”。他和他的科研团队克服重重困难，成功研究出杂交水稻，使水稻产量大幅提高，为解决中国人的吃饭问题作出了巨大贡献。杂交水稻技术还在世界许多国家推广应用，帮助当地人摆脱饥饿。袁隆平一生致力于农业科学研究，他严谨求实、无私奉献的精神激励着一代又一代年轻人。",
+      "reference_en": "Yuan Longping is honored as the \"Father of Hybrid Rice\". Overcoming numerous difficulties, he and his research team successfully developed hybrid rice, which greatly increased rice output and made a tremendous contribution to solving the food problem in China. The hybrid rice technology has also been extended to many countries around the world, helping local people get rid of hunger. Devoting his whole life to agricultural science, Yuan Longping inspired generation after generation of young people with his rigorous, realistic and selfless spirit.",
+      "key_points": ["be honored as 被誉为", "overcome numerous difficulties 克服重重困难", "make a contribution to 为……作贡献", "devote one's life to 毕生致力于"],
+      "common_mistakes": ["杂交水稻写成 mix rice（应为 hybrid rice）", "产量 increase production volume 冗余", "一代又一代写成 one generation and one generation"]
+    },
+    {
+      "id": "t_r2023b_1",
+      "level": "cet4",
+      "tag": "真题",
+      "year": "2023年12月",
+      "topic": "饮食变化",
+      "source_cn": "改革开放以来，中国人的饮食发生了显著变化。过去，人们只求吃得饱，食物种类单一，供应也常常不足。如今，人们不仅要求吃得饱，而且要求吃得好、吃得健康。餐桌上出现了更多的蔬菜、水果、奶制品，人们的营养状况大为改善。同时，人们对食品安全和营养搭配也越来越重视，追求科学健康的饮食习惯。",
+      "reference_en": "Since the reform and opening-up, remarkable changes have taken place in the diet of Chinese people. In the past, people only sought to have enough to eat, with limited varieties of food and frequent shortages. Nowadays, people demand not only sufficient food but also a better and healthier diet. More vegetables, fruits and dairy products have appeared on the dining table, and people's nutritional status has greatly improved. Meanwhile, growing attention has been paid to food safety and balanced nutrition, as people pursue scientific and healthy eating habits.",
+      "key_points": ["reform and opening-up 改革开放", "remarkable changes 显著变化", "nutritional status 营养状况", "balanced nutrition 营养搭配"],
+      "common_mistakes": ["吃得饱译成 eat full（应 have enough to eat）", "改革开放写成 reform and open", "过去与现在的对比时态混乱"]
+    },
+    {
+      "id": "t_r2025b_1",
+      "level": "cet6",
+      "tag": "真题",
+      "year": "2025年6月",
+      "topic": "天宫空间站",
+      "source_cn": "天宫空间站是中国首个太空实验室，拥有110多立方米的使用空间，可同时驻留三名宇航员，位于距地球表面400至450公里的轨道上。天宫空间站主要用于开展空间科学实验和技术试验，支持人在太空中长期生活和工作。它的建成标志着中国载人航天事业进入了新的发展阶段，也为国际太空合作提供了新的平台。",
+      "reference_en": "Tiangong, China's first space station, offers more than 110 cubic meters of usable space and can accommodate three astronauts at the same time. It orbits the Earth at an altitude of 400 to 450 kilometers above the surface. The space station is mainly used to carry out space science experiments and technology tests, supporting humans' long-term living and working in space. Its completion marks a new stage in China's manned space program and also provides a new platform for international space cooperation.",
+      "key_points": ["space station 空间站", "orbit the Earth 环绕地球运行", "carry out experiments 开展实验", "manned space program 载人航天事业"],
+      "common_mistakes": ["立方米误译成 square meters（应为 cubic meters）", "驻留写成 stay（更地道 accommodate）", "标志写成 symbolize（此处应用 mark）"]
+    },
+    {
+      "id": "t_r2025b_2",
+      "level": "cet6",
+      "tag": "真题主题",
+      "year": "2025年6月",
+      "topic": "粤港澳大湾区",
+      "source_cn": "粤港澳大湾区包括香港、澳门两个特别行政区和广东省的九个城市，是中国开放程度最高、经济活力最强的区域之一。大湾区依托各地优势，推进科技创新合作，加快建设国际科技创新中心。便捷的交通网络使大湾区城市之间的往来更加密切，一小时生活圈初步形成。大湾区建设不仅推动了区域协调发展，也为世界经济发展注入了新动能。",
+      "reference_en": "The Guangdong-Hong Kong-Macao Greater Bay Area, covering two special administrative regions and nine cities in Guangdong Province, is one of the most open and economically vibrant regions in China. Relying on the strengths of different cities, the bay area promotes scientific and technological innovation cooperation and accelerates the building of an international center for innovation. A convenient transportation network has made travel between cities increasingly close, and a one-hour living circle has taken shape. The development of the Greater Bay Area has not only promoted coordinated regional development, but also injected new momentum into the world economy.",
+      "key_points": ["Greater Bay Area 大湾区", "special administrative region 特别行政区", "take shape 初步形成", "inject new momentum 注入新动能"],
+      "common_mistakes": ["特别行政区缩写 SAR 首次出现需全称", "依托写成 depend on（更地道 relying on）", "经济活力 strongest economy vigor 搭配不当"]
+    },
+    {
+      "id": "t_r2023b_1",
+      "level": "cet6",
+      "tag": "真题",
+      "year": "2023年12月",
+      "topic": "南水北调",
+      "source_cn": "自古以来，中国水资源分布极不均衡，北方缺水问题尤为突出。为解决这一问题，中国实施了南水北调工程，将长江流域丰富的水资源调往北方缺水地区。工程包括东、中、西三条线路，覆盖多个省份，惠及数亿人口。南水北调不仅缓解了北方地区的用水紧张，也改善了受水区的生态环境，促进了当地经济社会的可持续发展。",
+      "reference_en": "Since ancient times, China's water resources have been extremely unevenly distributed, with water shortage being particularly serious in the north. To address this problem, China launched the South-to-North Water Diversion Project, transferring abundant water from the Yangtze River basin to the water-scarce north. Consisting of the eastern, central and western routes, the project covers many provinces and benefits hundreds of millions of people. It has not only relieved the water tension in northern regions, but also improved the ecological environment of the areas receiving water, promoting sustainable economic and social development there.",
+      "key_points": ["unevenly distributed 分布不均", "water diversion 调水", "consist of 包括", "sustainable development 可持续发展"],
+      "common_mistakes": ["调水写成 move water（应 divert water）", "缓解写成 solve（缓解应 relieve）", "数亿 hundreds of millions 复数形式遗漏"]
+    },
+    {
+      "id": "t_r2024b_1",
+      "level": "cet4",
+      "tag": "真题主题",
+      "year": "2024年12月",
+      "topic": "敦煌莫高窟",
+      "source_cn": "敦煌莫高窟位于中国西北部的甘肃省，是世界上现存规模最大、内容最丰富的佛教艺术宝库之一。莫高窟始建于公元366年，历经十多个朝代的开凿，现存洞窟七百多个，壁画四万五千多平方米，彩塑两千多尊。壁画内容包括佛像、飞天、供养人以及反映古代社会生活的场景，是研究古代中外文化交流的珍贵资料。1987年，莫高窟被列入《世界遗产名录》。",
+      "reference_en": "The Mogao Grottoes in Dunhuang, located in Gansu Province in northwest China, are among the largest and richest existing treasure houses of Buddhist art in the world. First built in 366 AD and constructed over more than ten dynasties, the grottoes now contain over 700 caves, 45,000 square meters of murals and more than 2,000 painted sculptures. The murals depict Buddha images, flying apsaras, donors and scenes of ancient social life, serving as precious materials for studying cultural exchanges between ancient China and other countries. In 1987, the Mogao Grottoes were inscribed on the World Heritage List.",
+      "key_points": ["grottoes 石窟", "mural 壁画", "painted sculpture 彩塑", "be inscribed on the World Heritage List 列入世界遗产名录"],
+      "common_mistakes": ["平方米 square meters 注意与立方米区分", "开凿写成 dig（应 construct/build）", "朝代 dynasty 复数 dynasties"]
+    }
+  ]
+}

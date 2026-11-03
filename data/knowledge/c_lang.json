@@ -1,0 +1,291 @@
+{
+  "subject": "c_lang",
+  "name": "C语言",
+  "kps": [
+    {
+      "id": "c_data",
+      "name": "数据类型与运算符",
+      "prereqs": [],
+      "description": "C 的基本数据类型（int/float/double/char）与运算规则。类型决定字节数与解释方式，隐式类型转换和整除截断是最常见的坑。",
+      "key_points": [
+        "常用字节数（32/64位通用约定）：char 1、short 2、int 4、long 4或8、float 4、double 8",
+        "整数除法向零截断：5/2=2，-5/2=-2；取模符号跟被除数：-5%2=-1",
+        "隐式转换规则：低精度→高精度（int→double），赋值时反向会丢失精度",
+        "自增自减：i++ 先用后加，++i 先加后用；副作用不要与同变量混在一个表达式里"
+      ],
+      "common_errors": [
+        "5/2 写成 2.5——两个整数相除结果是整数 2，需 5.0/2",
+        "float 用 == 与 0 比较——浮点有误差，应 fabs(a-0)<1e-6",
+        "char 实质是小整数，'0' 与 0 不同（ASCII 48 vs 数值0）"
+      ],
+      "keywords": ["数据类型", "int", "float", "double", "char", "运算符", "类型转换", "自增", "整除"],
+      "samples": [
+        {
+          "type": "compute",
+          "q": "写出输出：int a=5, b=2; printf(\"%d %f\\n\", a/b, (double)a/b);",
+          "a": "a/b 是整数除法得 2；(double)a/b 先把 a 转成 double 再除得 2.500000（%f 默认6位小数）。输出：2 2.500000"
+        },
+        {
+          "type": "concept",
+          "q": "为什么 float f; if (f == 0.1) 是危险写法？应该怎么写？",
+          "a": "0.1 在二进制中无法精确表示，f 存储的是近似值，直接 == 比较很可能为假。正确写法：if (fabs(f - 0.1) < 1e-6)。浮点比较永远用误差范围。"
+        }
+      ],
+      "refs": [
+        {"title": "谭浩强《C程序设计》第二章", "url": ""},
+        {"title": "K&R《C程序设计语言》第2章", "url": ""}
+      ]
+    },
+    {
+      "id": "c_flow",
+      "name": "分支与循环",
+      "prereqs": ["c_data"],
+      "description": "if/switch 分支与 while/for/do-while 循环。核心是循环三要素（初始化、条件、更新）与边界，死循环和差一错误都出在这里。",
+      "key_points": [
+        "for 与 while 等价可互换；do-while 至少执行一次循环体",
+        "switch 的 case 只是入口标号，忘记 break 会继续往下执行（穿透）",
+        "break 跳出本层循环/switch；continue 跳过本次进入下一次判断",
+        "循环边界：n 次循环通常写 for(i=0;i<n;i++)，注意 < 与 <= 的差一错误"
+      ],
+      "common_errors": [
+        "if(a=0) —— 赋值不是比较，恒为假；应写 if(a==0)",
+        "switch 忘写 break 导致穿透到下一个 case",
+        "循环体内修改循环变量导致死循环或漏项"
+      ],
+      "keywords": ["if", "else", "switch", "case", "while", "for", "循环", "break", "continue", "分支"],
+      "samples": [
+        {
+          "type": "compute",
+          "q": "写出输出：int s=0; for(int i=1;i<=10;i++){ if(i%3==0) continue; s+=i; } printf(\"%d\", s);",
+          "a": "跳过 3、6、9，累加 1+2+4+5+7+8+10 = 37。continue 只是跳过本次循环体的剩余部分，i++ 仍会执行。"
+        },
+        {
+          "type": "concept",
+          "q": "switch(n){case 1: printf(\"A\"); case 2: printf(\"B\"); break; default: printf(\"C\");} 当 n=1 时输出什么？",
+          "a": "输出 AB。case 1 没有break，执行完 printf(\"A\") 后穿透到 case 2，直到遇到 break 才跳出。要每个分支独立必须各写 break。"
+        }
+      ],
+      "refs": [{"title": "谭浩强《C程序设计》第四、五章", "url": ""}]
+    },
+    {
+      "id": "c_func",
+      "name": "函数与递归",
+      "prereqs": ["c_flow"],
+      "description": "函数定义、参数传值、返回值与递归。C 只有值传递——传指针才能修改实参，这是理解后续指针的桥梁。",
+      "key_points": [
+        "C 的参数是值传递：形参是实参的副本，修改形参不影响实参",
+        "函数要先声明（原型）再使用；无 return 的 void 函数",
+        "递归两要素：基准情形（终止条件）+ 递归调用规模缩小",
+        "局部变量栈上分配，函数返回后失效；static 局部变量生存期为整个程序"
+      ],
+      "common_errors": [
+        "想通过 void swap(int a,int b) 交换实参——值传递做不到，要传指针",
+        "递归没有基准情形或规模不缩小 → 栈溢出",
+        "返回局部变量的地址——函数返回后栈帧销毁，指针悬空"
+      ],
+      "keywords": ["函数", "传值", "递归", "参数", "返回值", "原型", "static", "栈"],
+      "samples": [
+        {
+          "type": "compute",
+          "q": "写出递归求 n! 的函数，并说明 f(4) 的展开过程。",
+          "a": "long f(int n){ return n<=1 ? 1 : n*f(n-1); }。f(4)=4×f(3)=4×3×f(2)=4×3×2×f(1)=4×3×2×1=24。基准情形 n<=1 终止递归。"
+        },
+        {
+          "type": "concept",
+          "q": "void change(int *p){ *p = 100; } int x=1; change(&x); 后 x 是多少？为什么？",
+          "a": "x=100。传的是 x 的地址（值传递这个地址值），p 指向 x，*p=100 通过解引用直接改写 x 所在内存。这是 C 中让函数修改外部变量的标准方式。"
+        }
+      ],
+      "refs": [{"title": "K&R《C程序设计语言》第4章 函数与程序结构", "url": ""}]
+    },
+    {
+      "id": "c_array",
+      "name": "数组与字符串",
+      "prereqs": ["c_data", "c_flow"],
+      "description": "数组是同类型连续内存；C 字符串是以 '\\0' 结尾的字符数组。数组名在表达式中退化为首元素指针，下标从 0 开始。",
+      "key_points": [
+        "下标范围 [0, n-1]；C 不做边界检查，越界是未定义行为",
+        "字符串长度 = '\\0' 之前的有效字符数；strlen 不含 '\\0'，sizeof 是整个数组大小",
+        "常用串函数在 <string.h>：strcpy/strcat/strcmp/strlen；比较用 strcmp 而非 ==",
+        "二维数组按行存储，a[i][j] 地址 = 首地址 + (i×列数+j)×元素大小"
+      ],
+      "common_errors": [
+        "char s[5]; 存 \"hello\" —— 需要至少 6 字节给 '\\0'，否则越界",
+        "用 == 比较两个字符串是否相等——比较的是地址，应用 strcmp==0",
+        "越界读写（如循环写到 a[n]）——未定义行为，可能崩溃或悄悄改坏别的变量"
+      ],
+      "keywords": ["数组", "字符串", "strlen", "strcpy", "strcmp", "下标", "越界", "二维数组", "\\0"],
+      "samples": [
+        {
+          "type": "compute",
+          "q": "char s[]=\"abcde\"; 求 strlen(s) 与 sizeof(s)。",
+          "a": "strlen(s)=5（不含'\\0'的有效长度）；sizeof(s)=6（数组实际占6字节，含结尾'\\0'）。两者含义不同，考试常考对比。"
+        },
+        {
+          "type": "compute",
+          "q": "写函数把整型数组 a[n] 中最大值与其下标找出来。",
+          "a": "void maxOf(int a[], int n, int *mv, int *mi){ *mv=a[0]; *mi=0; for(int i=1;i<n;i++) if(a[i]>*mv){*mv=a[i];*mi=i;} }。通过指针把两个结果带回，注意从 i=1 开始比较。"
+        }
+      ],
+      "refs": [{"title": "K&R《C程序设计语言》第5章（指针与数组）", "url": ""}]
+    },
+    {
+      "id": "c_pointer",
+      "name": "指针",
+      "prereqs": ["c_array", "c_func"],
+      "description": "指针是存放地址的变量，是 C 的灵魂也是难点。核心概念：取地址 &、解引用 *、指针运算按所指类型大小步进。",
+      "key_points": [
+        "& 取地址，* 解引用；int *p=&a 表示 p 存 a 的地址，*p 等价于 a",
+        "指针与数组：a[i] 等价于 *(a+i)；数组名是首元素地址（常量指针）",
+        "指针运算 p+1 前进 sizeof(类型) 字节；p2-p1 得同数组内元素个数",
+        "野指针：未初始化/指向已释放内存的指针，解引用是未定义行为；定义时置 NULL 是好习惯"
+      ],
+      "common_errors": [
+        "int *p; *p=10; —— p 未初始化就解引用，写向随机地址导致崩溃",
+        "混淆 int *p 与 *p：声明时*是类型的一部分，表达式里*是解引用",
+        "返回局部变量地址 / 使用 free 后的指针（悬空指针）"
+      ],
+      "keywords": ["指针", "地址", "解引用", "野指针", "指针运算", "二级指针", "指针与数组", "&", "*"],
+      "samples": [
+        {
+          "type": "compute",
+          "q": "int a[4]={10,20,30,40}, *p=a; 求 *(p+2)、*p++、(*p)++ 后的值。",
+          "a": "*(p+2)=30（前进2个int）。*p++ 取*p的值10后p再前进（后缀优先）；(*p)++ 是把当前元素自增得10且a[0]变11。优先级与结合性决定完全不同的行为。"
+        },
+        {
+          "type": "concept",
+          "q": "swap(int *x,int *y){int t=*x;*x=*y;*y=t;} 为什么能交换实参？传值版本为什么不行？",
+          "a": "指针版本拿到的是实参的地址，*x/*y 直接操作实参内存。传值版本收到的是副本，交换的只是副本，函数返回后副本销毁，实参不变。"
+        }
+      ],
+      "refs": [
+        {"title": "K&R 第5章 指针与数组（必读）", "url": ""},
+        {"title": "3Blue1Brown 式图解可参考：CS50指针讲解", "url": "https://cs50.harvard.edu/x/"}
+      ]
+    },
+    {
+      "id": "c_struct",
+      "name": "结构体与联合",
+      "prereqs": ["c_pointer"],
+      "description": "结构体把不同类型的数据组合成一个整体，是组织复杂数据（学生、节点）的基础；访问用 . 或 ->。",
+      "key_points": [
+        "定义 struct Student { char name[20]; int age; }; 声明 struct Student s1;",
+        "s1.age 用点访问；结构体指针 p->age 等价于 (*p).age",
+        "结构体赋值是逐成员拷贝；作为参数传值会拷贝整个结构体，大结构体建议传指针",
+        "typedef 可省去每次写 struct 关键字；联合 union 所有成员共享同一块内存"
+      ],
+      "common_errors": [
+        "结构体里的字符数组用 = 赋值字符串——必须 strcpy",
+        "混淆 s.age 与 p->age：指针用 -> 或 (*p).age，写 p.age 是编译错误",
+        "忘记 struct 关键字（未 typedef 时）"
+      ],
+      "keywords": ["结构体", "struct", "typedef", "成员", "箭头", "联合", "union", "->"],
+      "samples": [
+        {
+          "type": "compute",
+          "q": "定义学生结构体并写函数按年龄比较返回年龄较大的学生。",
+          "a": "typedef struct { char name[20]; int age; } Stu; Stu older(Stu a, Stu b){ return a.age>b.age ? a : b; }。传结构体是值拷贝，返回也是拷贝；人数多时改用 Stu* 传址更高效。"
+        },
+        {
+          "type": "concept",
+          "q": "struct Node { int data; struct Node *next; }; 这样的自引用结构有什么用？",
+          "a": "这是链表节点：data 存数据，next 存下一个节点的地址，把节点串成链。自引用指针是实现链表、树等动态数据结构的基础。"
+        }
+      ],
+      "refs": [{"title": "K&R 第6章 结构", "url": ""}]
+    },
+    {
+      "id": "c_mem",
+      "name": "动态内存管理",
+      "prereqs": ["c_pointer"],
+      "description": "malloc/free 在堆上手动管理内存：需要多大要多少，用完必须归还。泄漏与重复释放是 C 程序两大顽疾。",
+      "key_points": [
+        "int *p = (int*)malloc(n*sizeof(int))：申请连续 n 个 int；失败返回 NULL 要检查",
+        "free(p) 归还内存；释放后 p 置 NULL 防悬空",
+        "内存分区：代码/常量区、栈（局部变量，自动管理）、堆（手动 malloc/free）、全局/静态区",
+        "realloc 可扩容已申请块；calloc 会清零"
+      ],
+      "common_errors": [
+        "malloc 后不 free → 内存泄漏；free 后继续用 → 悬空指针",
+        "同一块内存 free 两次 → 未定义行为",
+        "malloc 的字节数算错：应 n*sizeof(int) 而不是 n（除非 char）"
+      ],
+      "keywords": ["malloc", "free", "calloc", "realloc", "内存泄漏", "堆", "栈", "悬空指针", "NULL"],
+      "samples": [
+        {
+          "type": "compute",
+          "q": "申请一个含 n 个 double 的数组并全部初始化为 0，最后正确释放。",
+          "a": "double *a = (double*)calloc(n, sizeof(double)); if(!a) return; ... free(a); a=NULL;。calloc 自动清零等价于 malloc+memset；置 NULL 防止后续误用悬空指针。"
+        },
+        {
+          "type": "concept",
+          "q": "下面代码有什么问题？char *s = (char*)malloc(10); strcpy(s, \"hello\"); free(s); printf(\"%s\", s);",
+          "a": "free 之后 s 是悬空指针，printf 读取已释放内存——未定义行为。正确做法：free(s); s=NULL; 之后不再使用。这类 bug 编译器不报错，运行时才可能暴露。"
+        }
+      ],
+      "refs": [{"title": "K&R 第7章 输入输出与系统接口", "url": ""}]
+    },
+    {
+      "id": "c_file",
+      "name": "文件操作",
+      "prereqs": ["c_pointer"],
+      "description": "通过 FILE* 以文本或二进制方式读写文件：打开→读写→关闭。fopen 的模式串与 fgets/fscanf 的区别是考点。",
+      "key_points": [
+        "FILE *fp=fopen(\"a.txt\",\"r\")；模式：r 读 / w 写(覆盖) / a 追加，带 b 为二进制",
+        "fopen 返回 NULL（文件不存在/无权限）必须检查；结束前 fclose",
+        "读函数：fgetc/fgets(行)/fscanf(格式化)；写：fputc/fputs/fprintf/fwrite",
+        "feof 判断是否读到末尾；rewind/fseek 移动读写位置"
+      ],
+      "common_errors": [
+        "不检查 fopen 是否为 NULL 就读写——空指针崩溃",
+        "用 \"w\" 打开已有文件误以为追加——会清空原内容，追加用 \"a\"",
+        "fgets 会把行尾 '\\n' 一并读入，统计或比较前要处理"
+      ],
+      "keywords": ["文件", "fopen", "fclose", "fgets", "fprintf", "fread", "fwrite", "feof", "模式"],
+      "samples": [
+        {
+          "type": "compute",
+          "q": "把 10 个整数写入文件 data.txt，再读出求和。",
+          "a": "FILE *f=fopen(\"data.txt\",\"w\"); for(i=0;i<10;i++) fprintf(f,\"%d \",a[i]); fclose(f); 再 fopen(\"data.txt\",\"r\")，用 fscanf(f,\"%d\",&x) 循环读到 feof，累加。注意写和读模式不同，读写之间先关闭。"
+        },
+        {
+          "type": "concept",
+          "q": "\"r\"、\"w\"、\"a\" 三种模式分别适合什么场景？用错会怎样？",
+          "a": "r 只读，文件必须已存在；w 只写，存在则清空、不存在则创建；a 追加，保留原内容在末尾写。用 w 打开本想追加的日志文件会把历史全部清掉——数据丢失型事故。"
+        }
+      ],
+      "refs": [{"title": "谭浩强《C程序设计》第十三章 文件", "url": ""}]
+    },
+    {
+      "id": "c_prep",
+      "name": "预处理与多文件",
+      "prereqs": ["c_func"],
+      "description": "#include/#define/#ifdef 在编译前处理：头文件组织声明、宏做文本替换。理解“宏是替换不是函数”能避开大部分坑。",
+      "key_points": [
+        "#include <> 找系统目录，\"\" 先找当前目录；头文件放声明，实现放 .c",
+        "#define PI 3.14 是文本替换；带参宏 SQR(x) ((x)*(x)) 必须加括号",
+        "#ifdef/#ifndef/#endif 防止头文件重复包含（include guard）",
+        "编译流程：预处理 → 编译 → 汇编 → 链接；链接错误多是声明与定义不一致"
+      ],
+      "common_errors": [
+        "#define SQR(x) x*x 无括号：SQR(1+2) 展开成 1+2*1+2=5 而不是 9",
+        "宏的参数带副作用：SQR(i++) 展开后 i 被加两次",
+        "头文件重复包含导致重定义——加 include guard"
+      ],
+      "keywords": ["预处理", "include", "define", "宏", "头文件", "头文件保护", "链接", "编译"],
+      "samples": [
+        {
+          "type": "compute",
+          "q": "#define SQR(x) x*x，求 SQR(1+2) 的值，并给出正确写法。",
+          "a": "展开为 1+2*1+2=5，不是 9！正确写法：#define SQR(x) ((x)*(x))。宏是纯文本替换，参数和整体都要加括号。"
+        },
+        {
+          "type": "concept",
+          "q": "为什么头文件里一般只放声明和宏，不放函数实现？",
+          "a": "头文件会被多个 .c include，若放实现会导致每个翻译单元各有一份定义，链接时重定义冲突。声明（原型）重复无害，实现只留一份在对应 .c 中。"
+        }
+      ],
+      "refs": [{"title": "K&R 第4章 预处理器", "url": ""}]
+    }
+  ]
+}

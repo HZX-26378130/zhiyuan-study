@@ -1,0 +1,31 @@
+# 参考示例：cloudflared 命名隧道配置
+#
+# 实际使用时不需要手动复制这个文件 —— deploy\windows\setup-domain.ps1 会自动在
+#   C:\Users\<你>\.cloudflared\config.yml
+# 生成等价内容（tunnel / credentials-file / hostname 都会填好）。
+#
+# 想手动配置时：
+#   1) cloudflared tunnel login
+#   2) cloudflared tunnel create zhiyuan          # 记下返回的 UUID
+#   3) 把下面的 UUID / 凭据路径 / 域名 换成你的
+#   4) cloudflared tunnel --config <本文件> ingress validate    # 校验
+#   5) cloudflared tunnel route dns zhiyuan study.example.com
+#   6) cloudflared tunnel --config <本文件> run
+
+tunnel: 11111111-2222-3333-4444-555555555555
+credentials-file: C:\Users\你的用户名\.cloudflared\11111111-2222-3333-4444-555555555555.json
+
+# 日志级别：debug 可排查"为什么 502"
+loglevel: info
+
+ingress:
+  # 你的域名 → 本机服务
+  - hostname: study.example.com
+    service: http://127.0.0.1:8765
+    originRequest:
+      # 冷启动/慢响应时给足时间
+      connectTimeout: 30s
+      # 本机是 http，不需要校验 TLS
+      noTLSVerify: true
+  # 兜底规则：必须存在，否则 cloudflared 拒绝启动
+  - service: http_status:404

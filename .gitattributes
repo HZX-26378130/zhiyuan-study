@@ -1,0 +1,14 @@
+# 统一换行：仓库内用 LF，Windows 脚本保留 CRLF
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+# PowerShell 脚本：Windows 上需要 CRLF；BOM 由文件内容保留，勿用工具转换编码
+*.ps1 text eol=crlf
+
+# 二进制资源
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary

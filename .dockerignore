@@ -1,0 +1,15 @@
+data/db/
+data/materials/
+server.log
+cloud_local.log
+*.log
+scripts/
+cloudbase/
+cloudbaserc.json
+config.json
+.git/
+.zcode/
+_archive/
+_t*.js
+__pycache__/
+*.pyc

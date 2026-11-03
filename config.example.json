@@ -1,0 +1,22 @@
+{
+  "_说明": "复制本文件为 config.json 并填写。api_key 留空则运行在离线演示模式（内置知识库可用）",
+  "llm": {
+    "base_url": "https://open.bigmodel.cn/api/paas/v4",
+    "api_key": "",
+    "model": "glm-4-flash",
+    "fallback": [
+      {"base_url": "https://text.pollinations.ai/openai", "model": "openai-fast", "vision_model": ""}
+    ],
+    "_fallback说明": "免费兜底通道链：主通道报错(余额不足/限流/鉴权/网络)时按顺序自动重试；置为 [] 关闭；兜底通道默认不继承主通道 api_key",
+    "_备选": [
+      "DeepSeek: base_url=https://api.deepseek.com, model=deepseek-chat",
+      "通义千问: base_url=https://dashscope.aliyuncs.com/compatible-mode/v1, model=qwen-plus",
+      "本地Ollama: base_url=http://127.0.0.1:11434/v1, model=qwen2.5:7b"
+    ]
+  },
+  "search": {
+    "provider": "",
+    "api_key": "",
+    "_说明": "可选联网检索（当前支持 bocha 博查）。留空则使用内置权威来源直达链接（知网/百度学术/智慧教育平台/MOOC）"
+  }
+}

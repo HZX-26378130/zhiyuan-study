@@ -1,0 +1,41 @@
+# 第三方内容声明（THIRD-PARTY NOTICES）
+
+本项目整体以 [MIT License](LICENSE) 发布。以下内容来自第三方或按其他方式提供，请一并遵守其条款。
+
+## 词库数据
+
+`data/vocab/cet4.json`、`data/vocab/cet6.json`
+
+- 来源：<https://github.com/KyleBing/english-vocabulary>
+- 许可：MIT License，版权归原作者所有
+- 说明：本项目仅将其转换为 JSON 便于离线加载，未修改词条内容
+
+## 四六级真题题面
+
+`data/bank/english_bank.json` 中标注了年份的条目
+
+- 题面取自**公开的真题回忆版**，版权归原始出题机构（全国大学英语四、六级考试委员会）所有
+- 仅用于学习与练习，不得用于商业用途
+- 范文、参考译文、评分维度点评为本项目自撰
+
+## 高校 / 开源资料索引
+
+`data/bank/sources.json` 收录的 13 个来源（清华 THU-math-source、南开 nku-sms-exams、哈工大 mathmatics-note、
+北航 5 系学习资料网盘、MIT OCW 等）
+
+- 本项目**仅收录链接与说明**，不镜像、不再分发其内容
+- 各来源内容版权归各自作者/机构，使用时请遵守原仓库许可
+
+## 知识图谱与例题
+
+`data/knowledge/*.json`（五科 47 考点）、`data/rubrics/*.json`、各模块内置范文
+
+- 为本项目自建内容，同样以 MIT License 授权
+
+## 理念与架构参考
+
+- [yoli-mi/good-learning-skill](https://github.com/yoli-mi/good-learning-skill) — 四步法教学（概念 → 例题 → 填步 → 变式）
+- [Miaotofu01/Study-Mate](https://github.com/Miaotofu01/Study-Mate) — 定路线 / 间隔复习
+- [ECNU-ICALK/EduChat](https://github.com/ECNU-ICALK/EduChat)、[Zenglian990/AI_Tutor_Release](https://github.com/Zenglian990/AI_Tutor_Release) — 教育大模型 / RAG 私教思路
+
+以上仅作思路参考，未复制其代码。

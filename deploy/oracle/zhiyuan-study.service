@@ -1,0 +1,39 @@
+[Unit]
+Description=知源学伴 ZhiYuan Study (AI 学习系统)
+Documentation=https://github.com/HZX-26378130/zhiyuan-study
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=zhiyuan
+Group=zhiyuan
+WorkingDirectory=/opt/zhiyuan-study
+EnvironmentFile=/opt/zhiyuan-study/.env
+ExecStart=/usr/bin/python3 /opt/zhiyuan-study/server.py
+Restart=always
+RestartSec=3
+# 优雅停止：发 SIGINT 让 KeyboardInterrupt 分支正常退出
+KillSignal=SIGINT
+TimeoutStopSec=10
+
+# —— 安全加固（最小权限）——
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+# 应用只允许写自己的 data 目录与 config.json
+ReadWritePaths=/opt/zhiyuan-study/data /opt/zhiyuan-study/config.json
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=zhiyuan-study
+
+[Install]
+WantedBy=multi-user.target

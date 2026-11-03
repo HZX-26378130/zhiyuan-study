@@ -187,6 +187,14 @@ def submit_practice(sid, iid, idx, answer, self_correct=None):
         else:
             feedback = '标准答案：%s' % v.get('answer', '')
     it.setdefault('practice', []).append({'ts': time.time(), 'idx': idx, 'correct': bool(correct)})
+    # 变式重练的结果也是「对/错」的硬证据 → 喂给 BKT（有考点 id 才记）
+    try:
+        from . import store as _store
+        kp_id = it.get('kp_id')
+        if kp_id:
+            _store.observe_answer(sid, kp_id, it.get('subject') or '', bool(correct))
+    except Exception:  # noqa: BLE001
+        pass
     # 间隔复习调度：通过 → 推进阶段并推迟下次复做；做错 → 重置为明天
     stage = it.get('review_stage', 0)
     if correct:

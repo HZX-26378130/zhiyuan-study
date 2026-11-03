@@ -181,7 +181,7 @@ const TITLES = {
   wrongbook: ['错题本 · 自动归纳', '批改/测验的错题自动按知识点与错误类型归类，可标记掌握、一键巩固'],
   notes: ['讲义生成', '针对薄弱知识点生成个性化讲义，可结合校本资料'],
   kg: ['知识图谱', '线代 / 数分考点地图与前置依赖'],
-  materials: ['校本资料库', '上传本校课件/习题（.txt/.md/.docx），问答出卷自动引用'],
+  materials: ['校本资料库', '上传本校课件/习题（.txt/.md/.docx/.pdf），问答出卷自动引用'],
   memory: ['学习记忆 · 自我迭代', '偏好指令 + 反馈积累 → 反思策略卡，反哺每次教学（均可编辑修改）'],
   report: ['诊断精讲报告', '错题逐题精讲：考点精讲 · 易错警示 · 同类例题 · 参考资料'],
   admin: ['🛠 管理端', '用户数 · 调用量 · 反馈质量 · 全班薄弱点 · 长期复盘'],
@@ -205,6 +205,12 @@ function renderNav(current) {
 async function route() {
   const path = (location.hash || '#/dashboard').replace(/^#\//, '');
   const [view, arg] = path.split('/');
+  // 深链：#/settings 直接打开设置弹窗（不占用导航项）
+  if (view === 'settings') {
+    if (window.__openSettings) window.__openSettings();
+    location.replace('#/dashboard');
+    return;
+  }
   renderNav(view);
   const [t, sub] = TITLES[view] || ['诊断精讲报告', '错题逐题精讲：考点 · 易错 · 同类例题'];
   $('#main').innerHTML = `<h1 class="page-title">${t}</h1><p class="page-sub">${sub}</p><div class="loading">加载中…</div>`;
@@ -392,8 +398,68 @@ function setupSettings() {
     $('#cfg-skey').placeholder = c.search.has_key ? '已保存搜索Key（留空保留）' : 'bocha api key';
     $('#cfg-test-result').textContent = '';
     applyPreset($('#cfg-preset').value, false);
+    renderFallback(c.llm.fallback || []);
     renderChannels(c.channels);
     modal.style.display = 'flex';
+  };
+
+  /* ---------- 兜底通道链可视化编辑 ---------- */
+  function fbRow(it = {}) {
+    const row = document.createElement('div');
+    row.className = 'fb-row';
+    row.style.cssText = 'display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:6px;margin-bottom:6px;align-items:center';
+    row.innerHTML = `
+      <input type="text" class="fb-base" placeholder="base_url（https://…）" value="${esc(it.base_url || '')}"
+             style="padding:7px 9px;border:1px solid #d5dae8;border-radius:7px;font-size:12px">
+      <input type="text" class="fb-model" placeholder="model" value="${esc(it.model || '')}"
+             style="padding:7px 9px;border:1px solid #d5dae8;border-radius:7px;font-size:12px">
+      <input type="text" class="fb-vision" placeholder="vision_model（可空）" value="${esc(it.vision_model || '')}"
+             style="padding:7px 9px;border:1px solid #d5dae8;border-radius:7px;font-size:12px">
+      <button type="button" class="btn small danger fb-del" title="删除这条">✕</button>`;
+    row.querySelector('.fb-del').onclick = () => row.remove();
+    // 该条通道自己的 Key（留空=免 Key 端点，或不继承主 Key）
+    const keyInput = document.createElement('input');
+    keyInput.type = 'password';
+    keyInput.className = 'fb-key';
+    keyInput.placeholder = it.has_key ? '已保存 Key（留空保留）' : 'api_key（免 Key 端点可空）';
+    keyInput.style.cssText = 'grid-column:1 / span 3;padding:6px 9px;border:1px solid #eef0f6;border-radius:7px;font-size:12px;margin-top:-2px';
+    row.appendChild(keyInput);
+    return row;
+  }
+
+  function renderFallback(list) {
+    const box = $('#cfg-fb-list');
+    if (!box) return;
+    box.innerHTML = '';
+    (list || []).forEach(it => box.appendChild(fbRow(it)));
+    if (!(list || []).length) {
+      box.innerHTML = '<div class="muted" style="font-size:12px;margin-bottom:4px">' +
+        '当前没有兜底通道（主通道失败就直接报错）</div>';
+    }
+  }
+
+  function collectFallback() {
+    const out = [];
+    document.querySelectorAll('#cfg-fb-list .fb-row').forEach(row => {
+      const base = row.querySelector('.fb-base').value.trim();
+      if (!base) return;                        // 空行忽略
+      const it = {
+        base_url: base,
+        model: row.querySelector('.fb-model').value.trim(),
+        vision_model: row.querySelector('.fb-vision').value.trim(),
+      };
+      const key = row.querySelector('.fb-key').value.trim();
+      if (key) it.api_key = key;                // 留空 = 不覆盖已保存的 Key
+      out.push(it);
+    });
+    return out;
+  }
+
+  const addBtn = $('#cfg-fb-add');
+  if (addBtn) addBtn.onclick = () => {
+    const box = $('#cfg-fb-list');
+    if (box.querySelector('.muted')) box.innerHTML = '';
+    box.appendChild(fbRow({}));
   };
   /* 主通道 + 免费兜底链的实时状态：欠费/限流会显示熔断倒计时 */
   function renderChannels(chans) {
@@ -411,6 +477,7 @@ function setupSettings() {
   }
   badge.onclick = open;
   $('#btn-settings').onclick = open;
+  window.__openSettings = open;      // 支持 #/settings 深链直接打开设置弹窗
   $('#settings-close').onclick = () => modal.style.display = 'none';
   modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
   function applyPreset(key, showNote = true) {
@@ -424,7 +491,8 @@ function setupSettings() {
   $('#cfg-preset').onchange = e => applyPreset(e.target.value);
   $('#cfg-save').onclick = async () => {
     const body = {llm: {base_url: $('#cfg-base').value.trim(), model: $('#cfg-model').value.trim(),
-                        vision_model: $('#cfg-vmodel').value.trim()},
+                        vision_model: $('#cfg-vmodel').value.trim(),
+                        fallback: collectFallback()},   // 可视化编辑的兜底链，整条覆盖
                   search: {provider: $('#cfg-skey').value.trim() ? 'bocha' : ''}};
     if ($('#cfg-key').value.trim()) body.llm.api_key = $('#cfg-key').value.trim();
     if ($('#cfg-skey').value.trim()) body.search.api_key = $('#cfg-skey').value.trim();
@@ -1952,9 +2020,9 @@ VIEWS.kg = async () => {
 VIEWS.materials = async () => {
   $('#main').innerHTML += `
     <div class="card">
-      <h3>上传本校资料（.txt / .md / .docx）</h3>
+      <h3>上传本校资料（.txt / .md / .docx / .pdf）</h3>
       <div class="rowline">
-        <input type="file" id="m-file" multiple accept=".txt,.md,.docx">
+        <input type="file" id="m-file" multiple accept=".txt,.md,.docx,.pdf">
         <input type="file" id="m-folder" webkitdirectory multiple title="选择整个文件夹批量导入">
       </div>
       <div class="muted mt">第二个按钮可选择整个资料文件夹批量导入（如北航网盘下载的「5系学习资料」中的 docx/文本文件）</div>
@@ -1974,7 +2042,7 @@ VIEWS.materials = async () => {
       <div id="m-sources" class="mt" style="line-height:2"></div>
     </div>`;
   await loadList();
-  const ACCEPT = ['.txt', '.md', '.docx'];
+  const ACCEPT = ['.txt', '.md', '.docx', '.pdf'];
   async function uploadMany(files, tag) {
     const ok = [...files].filter(f => ACCEPT.includes(f.name.slice(f.name.lastIndexOf('.')).toLowerCase()));
     const prog = $('#m-progress');

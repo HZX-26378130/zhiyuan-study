@@ -142,9 +142,11 @@ def submit(sid, quiz_id, answers):
     prof['stats']['quiz_done'] = prof.get('stats', {}).get('quiz_done', 0) + 1
     store.save_profile(sid, prof)
     score_pct = round(100 * right_n / max(1, len(data['items'])))
-    store.update_mastery(sid, 'en_vocab_%s' % data['level'], 'english',
-                         +4 if score_pct >= 80 else (+2 if score_pct >= 60 else -3),
-                         wrong=score_pct < 60)
+    # 逐词喂给 BKT：一次测验里每个词都是一条独立的对错证据，
+    # 比原来"整卷对得多就 +4"精细得多
+    kp = 'en_vocab_%s' % data['level']
+    for r in results:
+        store.observe_answer(sid, kp, 'english', bool(r.get('correct')))
     store.log_event(sid, 'quiz', {'level': data['level'], 'right': right_n, 'total': len(data['items'])})
     awarded = points.notify(sid, 'quiz', {'right': right_n})
     return {'quiz_id': quiz_id, 'right': right_n, 'total': len(data['items']),

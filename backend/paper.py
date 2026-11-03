@@ -241,8 +241,8 @@ def submit(sid, paper_id, answers):
             continue
         kid = q.get('kp_id')
         if kid:
-            delta = +6 if r['correct'] else -6
-            store.update_mastery(sid, kid, subj if subj != 'english' else 'english', delta, wrong=not r['correct'])
+            # 有明确对错 → 用 BKT 概率模型更新（不再手工 ±6 分）
+            store.observe_answer(sid, kid, subj if subj != 'english' else 'english', r['correct'])
         if not r['correct']:
             wrongbook.add(sid, 'math', q.get('kp_name') or '综合', stem=q['stem'],
                           your=r['your_answer'], answer=q['answer'], note=r['feedback'][:350],

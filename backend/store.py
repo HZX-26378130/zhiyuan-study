@@ -349,6 +349,10 @@ def get_student_summary(sid):
 # ---------- 掌握度 / 薄弱点 ----------
 
 def update_mastery(sid, kp_id, subject, delta, wrong=False):
+    """旧接口：累加式加减分。仅用于「无对错信号」的弱证据（如问过一次）。
+
+    有对错的地方请用 observe_answer（BKT 概率模型）。
+    """
     prof = get_profile(sid)
     if prof is None:
         return
@@ -357,6 +361,38 @@ def update_mastery(sid, kp_id, subject, delta, wrong=False):
     rec['score'] = max(0, min(100, rec['score'] + delta))
     rec['hits'] += 1
     rec['wrong'] += 1 if wrong else 0
+    rec['last'] = time.time()
+    rec['subject'] = subject
+    m[kp_id] = rec
+    save_profile(sid, prof)
+    return rec
+
+
+def observe_answer(sid, kp_id, subject, correct):
+    """用一次「答对/答错」更新掌握度（BKT 贝叶斯知识追踪）。
+
+    掌握度不再手工加减分，而是维护一个「已掌握概率」：
+      · 答对时上调，但会扣掉"蒙对"的可能（p_guess）
+      · 答错时下调，但会扣掉"手滑"的可能（p_slip）
+      · 每次作答后叠加学习转移（p_learn）：看了讲解也算学到一点
+    profile.mastery[kp] 里保留 score（0-100，供雷达图/薄弱点沿用）与 bkt 状态。
+    """
+    from . import kt
+    prof = get_profile(sid)
+    if prof is None:
+        return None
+    m = prof.setdefault('mastery', {})
+    rec = m.get(kp_id) or {'score': kt.score(None), 'hits': 0, 'wrong': 0,
+                           'last': 0, 'subject': subject}
+    state = rec.get('bkt') or kt.new_state(subject)
+    if state.get('p') is None:
+        state['p'] = kt.params()['p_init']
+    state = kt.observe(state, bool(correct))
+    state['subject'] = subject
+    rec['bkt'] = state
+    rec['score'] = kt.score(state)
+    rec['hits'] = int(rec.get('hits', 0)) + 1
+    rec['wrong'] = int(rec.get('wrong', 0)) + (0 if correct else 1)
     rec['last'] = time.time()
     rec['subject'] = subject
     m[kp_id] = rec

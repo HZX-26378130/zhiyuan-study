@@ -82,19 +82,27 @@ def load_config(sid=None):
             u = {}
         for sec in ('llm', 'search'):
             for k, v in (u.get(sec) or {}).items():
-                if v:
+                # fallback 是列表：空数组有语义（=关闭兜底链），不能被 `if v` 过滤掉
+                if v or (k == 'fallback' and isinstance(v, list)):
                     cfg[sec][k] = v
     return cfg
 
 
 def save_user_config(sid, llm_fields=None, search_fields=None):
-    """保存当前用户的自定义配置（只存显式提供的非空字段；系统默认不受影响）。"""
+    """保存当前用户的自定义配置（只存显式提供的字段；系统默认不受影响）。
+
+    约定：
+      · 字符串：空值表示"不改"，非空则覆盖
+      · 列表（如 fallback）：**空列表有语义**（=关闭兜底链），所以要能写入
+    """
     if not sid:
         return False
     u = store._read_json(store._path(sid, USER_CFG_NAME), {}) or {}
     for sec, fields in (('llm', llm_fields or {}), ('search', search_fields or {})):
         for k, v in fields.items():
-            if v:
+            if isinstance(v, list):
+                u.setdefault(sec, {})[k] = v        # 列表按原样写（含 []）
+            elif v:
                 u.setdefault(sec, {})[k] = v
     store._write_json(store._path(sid, USER_CFG_NAME), u)
     return True
@@ -117,8 +125,16 @@ def mask_key(key):
 
 
 def vision_available():
+    """是否有可用视觉能力：主通道有 vision_model，或兜底链里任意一条配了 vision_model。"""
     cfg = load_config()['llm']
-    return bool(cfg.get('api_key') and cfg.get('vision_model'))
+    if cfg.get('api_key') and cfg.get('vision_model'):
+        return True
+    for fb in (cfg.get('fallback') or []):
+        if not isinstance(fb, dict):
+            continue
+        if fb.get('vision_model') and (fb.get('api_key') or _keyless(dict(cfg, **fb))):
+            return True
+    return False
 
 
 class LLMError(Exception):
@@ -476,13 +492,12 @@ def _repair_json(frag):
     return None
 
 
-def chat_vision(prompt, image_bytes, mime='image/png', temperature=0.4, timeout=180):
-    """视觉模型识别图片（题图/手写作文）。image_bytes 为图片二进制。"""
+def _vision_once(cfg, prompt, image_bytes, mime, temperature, timeout):
+    """单次视觉调用（不含兜底）。"""
     import base64
-    cfg = load_config()['llm']
-    if not cfg.get('api_key') and not _keyless(cfg):
-        raise LLMError('未配置大模型 API Key')
     model = cfg.get('vision_model') or cfg.get('model')
+    if not model:
+        raise LLMError('该通道未配置视觉模型')
     url = _endpoint(cfg)
     b64 = base64.b64encode(image_bytes).decode()
     body = json.dumps({
@@ -498,15 +513,63 @@ def chat_vision(prompt, image_bytes, mime='image/png', temperature=0.4, timeout=
     if cfg.get('api_key'):
         headers['Authorization'] = 'Bearer ' + cfg['api_key']
     req = urllib.request.Request(url, data=body, method='POST', headers=headers)
-    hint = '（视觉能力需要主通道配置 vision_model；免费兜底通道不支持读图）' if cfg.get('fallback') else ''
     try:
         with _open(req, timeout=timeout) as resp:
             data = json.loads(resp.read().decode('utf-8'))
         return data['choices'][0]['message']['content']
     except urllib.error.HTTPError as e:
-        raise LLMError('视觉模型 HTTP %s: %s%s' % (e.code, e.read().decode('utf-8', 'replace')[:300], hint))
+        raise LLMError('视觉模型 HTTP %s: %s' % (e.code, e.read().decode('utf-8', 'replace')[:200]))
     except (urllib.error.URLError, TimeoutError, OSError, KeyError, IndexError) as e:
-        raise LLMError('视觉模型请求失败: %s%s' % (e, hint))
+        raise LLMError('视觉模型请求失败: %s' % e)
+
+
+def chat_vision(prompt, image_bytes, mime='image/png', temperature=0.4, timeout=180):
+    """视觉模型识别图片（题图/手写作文）。
+
+    「视觉兜底」：主通道没配 vision_model 或调用失败时，按顺序尝试兜底链里
+    **配了 vision_model 的通道**。这样主通道是纯文本模型（如 glm-4-flash）时，
+    仍可把免费视觉模型（如 glm-4v-flash）挂到兜底链上专门读图。
+    """
+    cfg = load_config()['llm']
+
+    candidates = []
+    if cfg.get('vision_model'):
+        candidates.append(cfg)
+    for fb in (cfg.get('fallback') or []):
+        if not isinstance(fb, dict) or not fb.get('base_url'):
+            continue
+        if not fb.get('vision_model'):
+            continue                       # 没有视觉模型的兜底通道直接跳过
+        c = dict(cfg)
+        c.pop('fallback', None)
+        c['api_key'] = ''                  # 不把主 Key 发给第三方（除非该条自带）
+        c['stream_url'] = ''
+        c.update(fb)
+        candidates.append(c)
+
+    if not candidates:
+        raise LLMError('未配置视觉模型：请在主通道或兜底链里填 vision_model '
+                       '（推荐免费的 glm-4v-flash）')
+
+    errors = []
+    for c in candidates:
+        if not c.get('api_key') and not _keyless(c):
+            continue
+        t0 = time.time()
+        name = _channel_name(c)
+        try:
+            out = _vision_once(c, prompt, image_bytes, mime, temperature, timeout)
+        except LLMError as e:
+            errors.append('%s → %s' % (name, e))
+            _record(name, False, (time.time() - t0) * 1000, 'vision')
+            continue
+        _record(name, True, (time.time() - t0) * 1000, 'vision')
+        _last.name = name
+        return out
+
+    if not errors:
+        raise LLMError('视觉通道都缺少 API Key')
+    raise LLMError('视觉模型全部通道均失败：%s' % '；'.join(errors))
 
 
 def chat_stream(messages, on_delta=None, temperature=0.6, timeout=120, max_tokens=4000):

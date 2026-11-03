@@ -56,6 +56,14 @@
     </div>
     <label class="f">联网搜索（可选）博查 API Key（不填则自动使用免Key的 Bing 检索）</label>
     <input type="text" id="cfg-skey" placeholder="bocha api key">
+    <div class="mt" id="cfg-fb-box">
+      <label class="f">兜底通道链（主通道失败时按顺序自动尝试）</label>
+      <div id="cfg-fb-list"></div>
+      <div class="rowline" style="margin-top:6px">
+        <button class="btn small ghost" type="button" id="cfg-fb-add">＋ 添加一条</button>
+        <span class="muted" style="font-size:12px">全部删掉 = 关闭兜底；不填 Key 的通道仅在它是免 Key 端点时生效</span>
+      </div>
+    </div>
     <div class="mt rowline">
       <button class="btn" id="cfg-save">保存</button>
       <button class="btn ghost" id="cfg-test">测试连接</button>

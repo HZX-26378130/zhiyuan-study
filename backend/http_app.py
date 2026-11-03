@@ -11,7 +11,7 @@ import urllib.parse
 from http.server import BaseHTTPRequestHandler
 
 from . import auth, daily, english, external, knowledge, llm, materials, memory, notes, paper, plan, points, qa, search, store, vocab, weekly, wrongbook
-from . import admin, archive, metrics
+from . import admin, archive, metrics, pdftext
 
 # 静态资源目录：exe 打包后由启动器指向解压出来的资源目录
 FRONTEND = os.path.abspath(os.environ.get('ZY_FRONTEND') or os.path.join(store.BASE, 'frontend'))
@@ -326,8 +326,18 @@ def _materials_add(ctx):
         results = []
         for fname, data in ctx['files']:
             ext = os.path.splitext(fname)[1].lower()
-            if ext not in ('.txt', '.md', '.docx'):
-                results.append({'name': fname, 'error': '仅支持 .txt/.md/.docx'})
+            if ext not in ('.txt', '.md', '.docx', '.pdf'):
+                results.append({'name': fname, 'error': '仅支持 .txt/.md/.docx/.pdf'})
+                continue
+            if ext == '.pdf':
+                # 纯标准库解析 PDF 文本层；扫描件/加密件会给出具体原因
+                try:
+                    text = pdftext.extract(data)
+                except ValueError as e:
+                    results.append({'name': fname, 'error': str(e)})
+                    continue
+                r = materials.add_material(ctx['sid'], os.path.splitext(fname)[0], text)
+                results.append(r or {'name': fname, 'error': 'PDF 里没有可用的文字内容'})
                 continue
             r = materials.add_material(ctx['sid'], os.path.splitext(fname)[0], None, raw_docx=data if ext == '.docx' else None)
             if r is None and ext != '.docx':
@@ -612,13 +622,40 @@ def _points_simulate(ctx):
 
 # ---------- API 接入窗口 ----------
 
+def _clean_fallback(items):
+    """校验并规整前端传来的兜底链：[{base_url, model, vision_model, api_key?}]"""
+    out = []
+    for it in (items or [])[:8]:                 # 最多 8 条，防止前端乱塞
+        if not isinstance(it, dict):
+            continue
+        base = (it.get('base_url') or '').strip()
+        if not base.startswith(('http://', 'https://')):
+            continue
+        row = {'base_url': base.rstrip('/'),
+               'model': (it.get('model') or '').strip()[:80],
+               'vision_model': (it.get('vision_model') or '').strip()[:80]}
+        key = (it.get('api_key') or '').strip()
+        if key:
+            row['api_key'] = key
+        out.append(row)
+    return out
+
+
 def _config_get(ctx):
     cfg = llm.load_config()
     l = cfg['llm']
     s = cfg.get('search', {})
+    fb = []
+    for it in (l.get('fallback') or []):
+        if isinstance(it, dict) and it.get('base_url'):
+            fb.append({'base_url': it.get('base_url', ''),
+                       'model': it.get('model', ''),
+                       'vision_model': it.get('vision_model', ''),
+                       'has_key': bool(it.get('api_key'))})
     return {'llm': {'base_url': l.get('base_url', ''), 'model': l.get('model', ''),
                     'vision_model': l.get('vision_model', ''), 'has_key': bool(l.get('api_key')),
-                    'key_masked': llm.mask_key(l.get('api_key', ''))},
+                    'key_masked': llm.mask_key(l.get('api_key', '')),
+                    'fallback': fb},
             'search': {'provider': s.get('provider', ''), 'has_key': bool(s.get('api_key'))},
             'llm_available': llm.available(), 'vision_available': llm.vision_available(),
             'channels': llm.channel_status()}   # 主通道 + 免费兜底链的实时状态（含熔断剩余秒数）
@@ -634,6 +671,9 @@ def _config_save(ctx):
             llm_fields[k] = nl[k].strip()
     if nl.get('api_key'):
         llm_fields['api_key'] = nl['api_key'].strip()
+    # 兜底链：前端可视化编辑后整条覆盖（空数组 = 关闭兜底）
+    if isinstance(nl.get('fallback'), list):
+        llm_fields['fallback'] = _clean_fallback(nl['fallback'])
     ns = b.get('search') or {}
     search_fields = {}
     if 'provider' in ns and ns.get('provider') is not None:

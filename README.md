@@ -215,6 +215,7 @@ py -3 scripts\test_archive.py    # 每日归档回归（桩服务器模拟 GitHu
 - [Linux VM 部署](deploy/oracle/README.md) —— Oracle 永久免费 / 任意 Ubuntu，含 systemd 与 Caddy HTTPS
 - [Windows 工具集](deploy/windows/README.md) —— 上传部署、数据备份、隧道发布、固定域名
 - [每日自动归档](deploy/archive/README.md) —— 免费容器平台的数据保险
+- [更新日志](CHANGELOG.md) —— 各版本改了什么、升级会不会丢数据
 
 ---
 

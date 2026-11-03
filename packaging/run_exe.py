@@ -81,23 +81,46 @@ def _free_port(start=8765, tries=30):
 
 
 def _seed_assets(data_dir, res):
-    """首次运行把只读资源里的静态数据（词库/图谱/题库/评分标准）复制到数据目录。
+    """把只读资源里的静态数据（词库/图谱/题库/评分标准）同步到数据目录。
 
     约定：ZY_DATA_DIR 就是项目里 `data/` 的等价物（内部会用到 <ZY_DATA_DIR>/knowledge、
-    <ZY_DATA_DIR>/db 等），所以这里直接复制到 data_dir/<sub>，不要多套一层。
+    <ZY_DATA_DIR>/db 等），所以直接复制到 data_dir/<sub>，不要多套一层。
+
+    升级行为：不能只在"目录不存在"时复制 —— 否则新版 exe 里更新的词库/知识图谱
+    永远到不了老用户手里。这里按文件逐个比对（缺失或大小不同就覆盖）；
+    用户自己的学习数据都在 db/ 下，不受影响。
     """
     import shutil
     src_data = os.path.join(res, 'data')
     if not os.path.isdir(src_data):
         return
+
+    def sync(src, dst):
+        try:
+            os.makedirs(dst, exist_ok=True)
+        except OSError:
+            return
+        for root, _dirs, files in os.walk(src):
+            rel = os.path.relpath(root, src)
+            target = dst if rel == '.' else os.path.join(dst, rel)
+            try:
+                os.makedirs(target, exist_ok=True)
+            except OSError:
+                continue
+            for fn in files:
+                s = os.path.join(root, fn)
+                d = os.path.join(target, fn)
+                try:
+                    if os.path.exists(d) and os.path.getsize(d) == os.path.getsize(s):
+                        continue        # 大小一致视为同一份（这些都是小 JSON，够用）
+                    shutil.copy2(s, d)
+                except OSError:
+                    continue
+
     for sub in ('vocab', 'knowledge', 'bank', 'rubrics'):
         s = os.path.join(src_data, sub)
-        d = os.path.join(data_dir, sub)
-        if os.path.isdir(s) and not os.path.isdir(d):
-            try:
-                shutil.copytree(s, d)
-            except OSError:
-                pass
+        if os.path.isdir(s):
+            sync(s, os.path.join(data_dir, sub))
 
 
 def main():

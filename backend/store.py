@@ -384,7 +384,19 @@ def observe_answer(sid, kp_id, subject, correct):
     m = prof.setdefault('mastery', {})
     rec = m.get(kp_id) or {'score': kt.score(None), 'hits': 0, 'wrong': 0,
                            'last': 0, 'subject': subject}
-    state = rec.get('bkt') or kt.new_state(subject)
+    state = rec.get('bkt')
+    if not state:
+        # 老数据迁移：旧版本的掌握度只有 score（累加式），没有概率状态。
+        # 直接用 p_init 会把 68 分的老考点"重置"成 30 分，用户会以为数据坏了；
+        # 这里用已有 score 反推概率，保证升级后掌握度平滑衔接。
+        old = rec.get('score')
+        if isinstance(old, (int, float)):
+            state = {'p': min(0.99, max(0.01, float(old) / 100.0)),
+                     'n': int(rec.get('hits') or 0),
+                     'wrong': int(rec.get('wrong') or 0),
+                     'subject': subject}
+        else:
+            state = kt.new_state(subject)
     if state.get('p') is None:
         state['p'] = kt.params()['p_init']
     state = kt.observe(state, bool(correct))

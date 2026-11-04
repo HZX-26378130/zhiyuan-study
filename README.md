@@ -104,6 +104,7 @@ cd zhiyuan-study
 | ✍️ **英语批改** | 四六级作文/翻译逐句改错 + 分维度点评 + 范文；含 2023.12–2025.6 共 14 套真题；手写作文可拍照 |
 | 🔤 **四六级词汇** | CET-4 7508 / CET-6 5651 开源词库；错词加权重出；生词本自动积累 |
 | 📝 **诊断卷** | 按薄弱点自动命题 → 交卷自动批改 → 错因回写画像 → 精讲报告（雷达图 + 逐题讲解） |
+| 🏦 **题库 · 组卷工作台** | 本地化大学数学题库（线代/数分 42 题种子库，可自录扩充）：知识点定位、稳定题目 ID、难度梯度智能组卷、A4 仿真排版导出 PDF、一键转为可自动批改的作答卷；并提供只读 Agent 取题接口（`/api/bank/capabilities → search → item`） |
 | 📕 **错题本** | 自动归纳 + AI 变式重练 + 掌握度门槛，反复出错置顶 |
 | 🧮 **BKT 知识追踪** | 掌握度用贝叶斯知识追踪更新：答对时扣掉"蒙对"、答错时扣掉"手滑"，每次作答后叠加学习转移 |
 | 🔁 **间隔复习** | 1/3/7/14 天遗忘曲线排期，到期进"今日复习"，连过 4 轮毕业 |
@@ -251,6 +252,7 @@ py -3 scripts\test_archive.py    # 每日归档回归（桩服务器模拟 GitHu
 - [mathsdream/THU-math-source](https://github.com/mathsdream/THU-math-source)、[zawnpn/nku-sms-exams](https://github.com/zawnpn/nku-sms-exams)、[cbhua/mathmatics-note](https://github.com/cbhua/mathmatics-note) — 已收录进资料索引
 - [ECNU-ICALK/EduChat](https://github.com/ECNU-ICALK/EduChat)、[Zenglian990/AI_Tutor_Release](https://github.com/Zenglian990/AI_Tutor_Release) — 教育大模型 / RAG 私教思路参考
 - [yoli-mi/good-learning-skill](https://github.com/yoli-mi/good-learning-skill)、[Miaotofu01/Study-Mate](https://github.com/Miaotofu01/Study-Mate) — 四步法 / 学习路线理念参考
+- [JudgePeach/math-question-bank](https://github.com/JudgePeach/math-question-bank) — 题库组卷工作台的设计参考：稳定题目 ID、知识点主辅标注、候选/完整两级读取与**只读 Agent 取题接口**（本项目 `bank/capabilities → search → item` 接口即借鉴其思路做成的大学版）
 
 > 词库版权归原开源项目（MIT）；真题题面来自公开回忆版，仅用于学习；知识图谱、例题、范文为本项目自建。
 

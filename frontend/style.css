@@ -269,3 +269,23 @@ table.tbl th { color: var(--ink-2); font-weight: 600; background: #f8fafd; }
   #btn-tour { width: auto !important; margin-top: 0 !important; padding: 6px 8px !important; }
   #main { padding: 12px 10px 40px; }
 }
+
+/* ---- 题库组卷工作台 ---- */
+.bank-item { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.bank-item .bk-ex { font-size: 13px; color: #6a7699; }
+.a4-sheet { width: 794px; max-width: 100%; margin: 0 auto; background: #fff; color: #1a1f33;
+  padding: 48px 56px; box-shadow: 0 6px 24px rgba(16,26,51,.18); border-radius: 4px;
+  font-size: 14px; line-height: 1.9; }
+.a4-head { text-align: center; font-size: 20px; font-weight: 700; margin-bottom: 22px; line-height: 1.5; }
+.a4-sec { margin: 18px 0 8px; font-size: 15px; }
+.a4-q { margin: 10px 0 6px; }
+.a4-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 18px; margin: 4px 0 0 20px; }
+.a4-ans { margin: 6px 0 0 20px; background: #f2fbf4; border: 1px dashed #9fd8b0; border-radius: 8px; padding: 8px 12px; font-size: 13.5px; }
+.a4-end { text-align: center; color: #8b93ad; margin-top: 26px; }
+@media print {
+  body * { visibility: hidden !important; }
+  .a4-sheet, .a4-sheet * { visibility: visible !important; }
+  .a4-sheet { position: absolute !important; left: 0; top: 0; width: 100%; box-shadow: none; border-radius: 0; }
+  #sidebar, #tour-layer { display: none !important; }
+}
+@media (max-width: 860px) { .a4-sheet { padding: 20px 18px; } .a4-opts { grid-template-columns: 1fr; } }

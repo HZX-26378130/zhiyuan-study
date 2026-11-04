@@ -1,0 +1,984 @@
+{
+ "questions": [
+  {
+   "id": "MQ-0001",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_det"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "计算 $\\begin{vmatrix}2&1\\\\3&4\\end{vmatrix}$ 的值为（　）。",
+   "answer": "A",
+   "solution": "二阶行列式按对角线法则：$2\\times4-1\\times3=5$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276557,
+   "updated": 1793805950.6276562,
+   "options": [
+    {
+     "key": "A",
+     "text": "5"
+    },
+    {
+     "key": "B",
+     "text": "8"
+    },
+    {
+     "key": "C",
+     "text": "11"
+    },
+    {
+     "key": "D",
+     "text": "2"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0002",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_det"
+   ],
+   "type": "solve",
+   "difficulty": "basic",
+   "stem": "计算四阶上三角行列式 $\\begin{vmatrix}1&0&0&0\\\\0&2&0&0\\\\0&0&3&0\\\\0&0&0&4\\end{vmatrix}$。",
+   "answer": "24",
+   "solution": "上三角行列式等于主对角元之积：$1\\cdot2\\cdot3\\cdot4=24$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276622,
+   "updated": 1793805950.6276624
+  },
+  {
+   "id": "MQ-0003",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_matrix"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "设 $A=\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}$，则 $A^2=$ ______。",
+   "answer": "$\\begin{pmatrix}1&4\\\\0&1\\end{pmatrix}$",
+   "solution": "矩阵乘法：第一行乘第一列得 1，第一行乘第二列得 $1\\cdot2+2\\cdot1=4$，第二行不变。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276636,
+   "updated": 1793805950.6276639
+  },
+  {
+   "id": "MQ-0004",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_matrix"
+   ],
+   "type": "choice",
+   "difficulty": "mid",
+   "stem": "设 $A,B$ 均为 $n$ 阶方阵，且 $AB=O$，则下列结论正确的是（　）。",
+   "answer": "C",
+   "solution": "矩阵乘法存在零因子，$AB=O$ 不能推出 $A=O$ 或 $B=O$（如 $A\\ne O,B\\ne O$ 时仍可能有 $AB=O$）；仅当其中之一可逆时才能推出另一个为 $O$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276648,
+   "updated": 1793805950.627665,
+   "options": [
+    {
+     "key": "A",
+     "text": "$A=O$ 或 $B=O$"
+    },
+    {
+     "key": "B",
+     "text": "$|A|=0$ 且 $|B|=0$"
+    },
+    {
+     "key": "C",
+     "text": "不能推出 $A=O$ 或 $B=O$"
+    },
+    {
+     "key": "D",
+     "text": "$A=B=O$"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0005",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_inverse"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "设 $A=\\begin{pmatrix}2&5\\\\1&3\\end{pmatrix}$，则 $A^{-1}=$ ______。",
+   "answer": "$\\begin{pmatrix}3&-5\\\\-1&2\\end{pmatrix}$",
+   "solution": "$|A|=6-5=1\\ne0$，$A^{-1}=\\dfrac{1}{|A|}\\begin{pmatrix}3&-5\\\\-1&2\\end{pmatrix}$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276703,
+   "updated": 1793805950.6276703
+  },
+  {
+   "id": "MQ-0006",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_inverse"
+   ],
+   "type": "solve",
+   "difficulty": "hard",
+   "stem": "证明：若 $n$ 阶方阵 $A$ 可逆，则 $(A^{T})^{-1}=(A^{-1})^{T}$。",
+   "answer": "$(A^{T})^{-1}=(A^{-1})^{T}$",
+   "solution": "因为 $A^{T}(A^{-1})^{T}=(A^{-1}A)^{T}=E$，且 $(A^{-1})^{T}A^{T}=(AA^{-1})^{T}=E$，由逆矩阵定义，$(A^{-1})^{T}$ 是 $A^{T}$ 的逆矩阵，即 $(A^{T})^{-1}=(A^{-1})^{T}$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276712,
+   "updated": 1793805950.6276715
+  },
+  {
+   "id": "MQ-0007",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_rank"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "矩阵 $\\begin{pmatrix}1&2&3\\\\2&4&6\\\\3&6&9\\end{pmatrix}$ 的秩为 ______。",
+   "answer": "1",
+   "solution": "三行均成比例（第 2、3 行分别是第 1 行的 2、3 倍），行秩为 1，故 $r(A)=1$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276724,
+   "updated": 1793805950.6276724
+  },
+  {
+   "id": "MQ-0008",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_rank"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "$n$ 阶方阵 $A$ 可逆的充要条件是（　）。",
+   "answer": "A",
+   "solution": "$A$ 可逆 $\\Leftrightarrow |A|\\ne0\\Leftrightarrow r(A)=n\\Leftrightarrow$ 列（行）向量组线性无关。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276736,
+   "updated": 1793805950.6276736,
+   "options": [
+    {
+     "key": "A",
+     "text": "$r(A)=n$"
+    },
+    {
+     "key": "B",
+     "text": "$|A|=0$"
+    },
+    {
+     "key": "C",
+     "text": "$A$ 的列向量组线性相关"
+    },
+    {
+     "key": "D",
+     "text": "$A^2=A$"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0009",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_eq"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "$n$ 元齐次线性方程组 $Ax=0$ 有非零解的充要条件是（　）。",
+   "answer": "B",
+   "solution": "齐次方程组永远有零解；有非零解 $\\Leftrightarrow r(A)<n$（自由未知量个数 $n-r(A)>0$）。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.627676,
+   "updated": 1793805950.627676,
+   "options": [
+    {
+     "key": "A",
+     "text": "$r(A)=n$"
+    },
+    {
+     "key": "B",
+     "text": "$r(A)<n$"
+    },
+    {
+     "key": "C",
+     "text": "$|A|\\ne0$"
+    },
+    {
+     "key": "D",
+     "text": "方程个数等于未知数个数"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0010",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_eq"
+   ],
+   "type": "solve",
+   "difficulty": "hard",
+   "stem": "讨论 $\\lambda$ 取何值时，方程组 $\\begin{cases}x+y=1\\\\ \\lambda x+y=\\lambda\\end{cases}$ 解的情况。",
+   "answer": "$\\lambda\\ne1$ 时有唯一解 $x=1,\\ y=0$；$\\lambda=1$ 时有无穷多解",
+   "solution": "两式相减得 $(\\lambda-1)x=\\lambda-1$。当 $\\lambda\\ne1$ 时 $x=1$，代回得 $y=0$，唯一解；当 $\\lambda=1$ 时两方程相同，令 $y=t$ 得 $x=1-t$，无穷多解。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276777,
+   "updated": 1793805950.6276777
+  },
+  {
+   "id": "MQ-0011",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_vector"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "向量组线性相关的充要条件是（　）。",
+   "answer": "A",
+   "solution": "向量组（$s\\ge2$）线性相关 $\\Leftrightarrow$ 至少有一个向量可由其余向量线性表示；B、C、D 都只是充分或无关条件。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276786,
+   "updated": 1793805950.6276786,
+   "options": [
+    {
+     "key": "A",
+     "text": "其中至少有一个向量可由其余向量线性表示"
+    },
+    {
+     "key": "B",
+     "text": "其中含零向量"
+    },
+    {
+     "key": "C",
+     "text": "向量个数大于维数"
+    },
+    {
+     "key": "D",
+     "text": "任意两个向量都成比例"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0012",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_vector"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "向量 $\\alpha_1=(1,2)^{T}$ 与 $\\alpha_2=(2,4)^{T}$ 线性 ______（填“相关”或“无关”）。",
+   "answer": "相关",
+   "solution": "$\\alpha_2=2\\alpha_1$，成比例即线性相关。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276803,
+   "updated": 1793805950.6276805
+  },
+  {
+   "id": "MQ-0013",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_eigen"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "矩阵 $A=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}$ 的全部特征值为 ______。",
+   "answer": "$3$ 和 $1$",
+   "solution": "$|\\lambda E-A|=(\\lambda-2)^2-1=0$，解得 $\\lambda_1=3,\\ \\lambda_2=1$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276813,
+   "updated": 1793805950.6276813
+  },
+  {
+   "id": "MQ-0014",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_eigen"
+   ],
+   "type": "solve",
+   "difficulty": "mid",
+   "stem": "求 $A=\\begin{pmatrix}3&1\\\\0&2\\end{pmatrix}$ 的特征值与对应的特征向量。",
+   "answer": "$\\lambda=3$ 对应 $\\xi_1=(1,0)^{T}$；$\\lambda=2$ 对应 $\\xi_2=(-1,1)^{T}$",
+   "solution": "$|\\lambda E-A|=(\\lambda-3)(\\lambda-2)=0$，$\\lambda_1=3,\\lambda_2=2$。对 $\\lambda=3$：$(3E-A)x=0$ 得 $x_2=0$，取 $\\xi_1=(1,0)^{T}$；对 $\\lambda=2$：$(2E-A)x=0$ 即 $-x_1+x_2=0$，取 $\\xi_2=(-1,1)^{T}$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276824,
+   "updated": 1793805950.627683
+  },
+  {
+   "id": "MQ-0015",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_diag"
+   ],
+   "type": "choice",
+   "difficulty": "mid",
+   "stem": "$n$ 阶矩阵 $A$ 可相似对角化的充要条件是（　）。",
+   "answer": "A",
+   "solution": "$A$ 可对角化 $\\Leftrightarrow$ $A$ 有 $n$ 个线性无关的特征向量；有 $n$ 个互异特征值只是充分条件。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.627685,
+   "updated": 1793805950.627685,
+   "options": [
+    {
+     "key": "A",
+     "text": "$A$ 有 $n$ 个线性无关的特征向量"
+    },
+    {
+     "key": "B",
+     "text": "$A$ 有 $n$ 个互异的特征值"
+    },
+    {
+     "key": "C",
+     "text": "$A$ 是对称矩阵"
+    },
+    {
+     "key": "D",
+     "text": "$A$ 可逆"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0016",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_diag"
+   ],
+   "type": "fill",
+   "difficulty": "mid",
+   "stem": "判断：$A=\\begin{pmatrix}1&1\\\\0&1\\end{pmatrix}$ 能否相似对角化？______（填“能”或“不能”并简述理由）。",
+   "answer": "不能：特征值 $λ=1$ 为二重根但只有一个线性无关特征向量",
+   "solution": "$|\\lambda E-A|=(\\lambda-1)^2=0$，特征值 1 为二重根；$(E-A)x=0$ 得 $x_2=0$，线性无关特征向量只有 1 个 < 2，故不能对角化。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276867,
+   "updated": 1793805950.6276867
+  },
+  {
+   "id": "MQ-0017",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_quad"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "二次型 $f(x_1,x_2)=x_1^{2}+2x_1x_2+3x_2^{2}$ 的矩阵为 ______。",
+   "answer": "$\\begin{pmatrix}1&1\\\\1&3\\end{pmatrix}$",
+   "solution": "交叉项 $2x_1x_2$ 拆成对称两半各记 $1$，对角项分别为 $1,3$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276875,
+   "updated": 1793805950.6276877
+  },
+  {
+   "id": "MQ-0018",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_quad"
+   ],
+   "type": "choice",
+   "difficulty": "mid",
+   "stem": "$n$ 元实二次型 $f=x^{T}Ax$ 正定的充要条件是（　）。",
+   "answer": "A",
+   "solution": "正定 $\\Leftrightarrow$ 各阶顺序主子式全大于零 $\\Leftrightarrow$ 特征值全大于零；B、C、D 均不是充要条件。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276882,
+   "updated": 1793805950.6276884,
+   "options": [
+    {
+     "key": "A",
+     "text": "$A$ 的各阶顺序主子式都大于零"
+    },
+    {
+     "key": "B",
+     "text": "$A$ 的特征值全小于零"
+    },
+    {
+     "key": "C",
+     "text": "$|A|>0$"
+    },
+    {
+     "key": "D",
+     "text": "$r(A)=n$"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0019",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_space"
+   ],
+   "type": "fill",
+   "difficulty": "mid",
+   "stem": "$\\mathbb{R}^3$ 的子空间 $W=\\{(x,y,z)^{T}: x+y+z=0\\}$ 的维数为 ______。",
+   "answer": "2",
+   "solution": "一个线性方程约束三个自由变量，解空间维数 $=3-r=3-1=2$（基础解系含 2 个向量）。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.62769,
+   "updated": 1793805950.62769
+  },
+  {
+   "id": "MQ-0020",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_space"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "向量空间 $V$ 的一组基是指 $V$ 中的向量组，它（　）。",
+   "answer": "A",
+   "solution": "基的定义：线性无关，且 $V$ 中任一向量都可由它线性表示。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276908,
+   "updated": 1793805950.627691,
+   "options": [
+    {
+     "key": "A",
+     "text": "线性无关，且 V 中任一向量都可由它线性表示"
+    },
+    {
+     "key": "B",
+     "text": "是 V 中任意的极大向量组"
+    },
+    {
+     "key": "C",
+     "text": "两两正交"
+    },
+    {
+     "key": "D",
+     "text": "包含零向量"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0101",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_seq"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "$\\lim\\limits_{n\\to\\infty}\\left(1+\\dfrac{1}{n}\\right)^{n}=$ ______。",
+   "answer": "$e$",
+   "solution": "重要极限：数列 $(1+1/n)^n$ 单调递增有上界，极限为自然对数的底 $e\\approx2.718$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276937,
+   "updated": 1793805950.6276937
+  },
+  {
+   "id": "MQ-0102",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_seq"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "若数列 $\\{a_n\\}$ 收敛，则下列结论必然成立的是（　）。",
+   "answer": "A",
+   "solution": "收敛 $\\Rightarrow$ 有界（必要条件）；有界不一定收敛（如 $(-1)^n$）；单调性与连续性均无从保证。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276944,
+   "updated": 1793805950.6276944,
+   "options": [
+    {
+     "key": "A",
+     "text": "$\\{a_n\\}$ 有界"
+    },
+    {
+     "key": "B",
+     "text": "$\\{a_n\\}$ 单调"
+    },
+    {
+     "key": "C",
+     "text": "$\\{a_n\\}$ 发散"
+    },
+    {
+     "key": "D",
+     "text": "以上都不对"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0103",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_func"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "$\\lim\\limits_{x\\to0}\\dfrac{\\sin x}{x}=$ ______。",
+   "answer": "1",
+   "solution": "第一重要极限（夹逼或泰勒：$\\sin x = x + o(x)$）。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276972,
+   "updated": 1793805950.6276975
+  },
+  {
+   "id": "MQ-0104",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_func"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "函数 $f$ 在 $x_0$ 连续的充要条件是（　）。",
+   "answer": "A",
+   "solution": "连续定义：$\\lim_{x\\to x_0}f(x)=f(x_0)$，即极限存在且等于该点函数值。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6276982,
+   "updated": 1793805950.6276984,
+   "options": [
+    {
+     "key": "A",
+     "text": "极限存在且等于 f(x_0)"
+    },
+    {
+     "key": "B",
+     "text": "左右极限存在"
+    },
+    {
+     "key": "C",
+     "text": "f 在 x_0 可导"
+    },
+    {
+     "key": "D",
+     "text": "f 在 x_0 附近单调"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0105",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_deriv"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "$\\dfrac{d}{dx}\\left(x^{2}e^{x}\\right)=$ ______。",
+   "answer": "$(x^2+2x)e^x$",
+   "solution": "乘积法则：$(x^2)'e^x+x^2(e^x)'=2xe^x+x^2e^x=(x^2+2x)e^x$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277013,
+   "updated": 1793805950.6277013
+  },
+  {
+   "id": "MQ-0106",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_deriv"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "关于可导与连续的关系，正确的是（　）。",
+   "answer": "A",
+   "solution": "可导必连续（一阶可导即可微，可微必连续）；反之不成立，如 $|x|$ 在 0 处连续但不可导。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277022,
+   "updated": 1793805950.6277022,
+   "options": [
+    {
+     "key": "A",
+     "text": "可导必连续"
+    },
+    {
+     "key": "B",
+     "text": "连续必可导"
+    },
+    {
+     "key": "C",
+     "text": "可导与连续无关"
+    },
+    {
+     "key": "D",
+     "text": "连续必可微"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0107",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_mvt"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "罗尔定理的三个条件是（　）。",
+   "answer": "A",
+   "solution": "Rolle 定理：闭区间连续、开区间可导、端点函数值相等；三者缺一不可。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.627705,
+   "updated": 1793805950.627705,
+   "options": [
+    {
+     "key": "A",
+     "text": "[a,b] 连续、(a,b) 可导、f(a)=f(b)"
+    },
+    {
+     "key": "B",
+     "text": "只需 (a,b) 内可导"
+    },
+    {
+     "key": "C",
+     "text": "只需 [a,b] 连续"
+    },
+    {
+     "key": "D",
+     "text": "f 在 [a,b] 单调"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0108",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_mvt"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "拉格朗日中值定理：$f(b)-f(a)=$ ______（写出含 $\\xi$ 的表达式，$\\xi\\in(a,b)$）。",
+   "answer": "$f'(\\xi)(b-a)$",
+   "solution": "拉格朗日中值公式，是罗尔定理推广到端点值不相等的情形。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277063,
+   "updated": 1793805950.6277065
+  },
+  {
+   "id": "MQ-0109",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_int_indef"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "$\\int 2x\\,dx=$ ______。",
+   "answer": "$x^2+C$",
+   "solution": "基本积分公式；切记不要漏写任意常数 $C$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277072,
+   "updated": 1793805950.6277075
+  },
+  {
+   "id": "MQ-0110",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_int_indef"
+   ],
+   "type": "solve",
+   "difficulty": "basic",
+   "stem": "计算 $\\int xe^{x^{2}}\\,dx$。",
+   "answer": "$\\dfrac{1}{2}e^{x^{2}}+C$",
+   "solution": "凑微分：$x\\,dx=\\dfrac12 d(x^2)$，原式 $=\\dfrac12\\int e^{x^2}d(x^2)=\\dfrac12 e^{x^2}+C$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277082,
+   "updated": 1793805950.6277082
+  },
+  {
+   "id": "MQ-0111",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_int_def"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "$\\int_{0}^{1}x^{2}\\,dx=$ ______。",
+   "answer": "$\\dfrac{1}{3}$",
+   "solution": "牛顿—莱布尼茨公式：$\\left[\\dfrac{x^3}{3}\\right]_0^1=\\dfrac13$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.627709,
+   "updated": 1793805950.627709
+  },
+  {
+   "id": "MQ-0112",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_int_def"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "$\\int_{-1}^{1}x^{3}\\,dx=$（　）。",
+   "answer": "A",
+   "solution": "$x^3$ 是奇函数，对称区间上奇函数积分为 0。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277099,
+   "updated": 1793805950.62771,
+   "options": [
+    {
+     "key": "A",
+     "text": "0"
+    },
+    {
+     "key": "B",
+     "text": "$\\frac12$"
+    },
+    {
+     "key": "C",
+     "text": "2"
+    },
+    {
+     "key": "D",
+     "text": "不存在"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0113",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_series_num"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "$p$-级数 $\\sum\\limits_{n=1}^{\\infty}\\dfrac{1}{n^{2}}$ 的收敛性是（　）。",
+   "answer": "A",
+   "solution": "$p=2>1$，$p$-级数收敛；对比调和级数 $\\sum 1/n$（$p=1$）发散。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277118,
+   "updated": 1793805950.6277118,
+   "options": [
+    {
+     "key": "A",
+     "text": "收敛"
+    },
+    {
+     "key": "B",
+     "text": "发散"
+    },
+    {
+     "key": "C",
+     "text": "条件收敛"
+    },
+    {
+     "key": "D",
+     "text": "无法判断"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0114",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_series_num"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "等比级数 $\\sum\\limits_{n=0}^{\\infty}\\dfrac{1}{2^{n}}$ 的和为 ______。",
+   "answer": "2",
+   "solution": "公比 $q=\\dfrac12$，$|q|<1$，和 $=\\dfrac{1}{1-q}=2$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.627713,
+   "updated": 1793805950.6277132
+  },
+  {
+   "id": "MQ-0115",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_series_pow"
+   ],
+   "type": "fill",
+   "difficulty": "mid",
+   "stem": "幂级数 $\\sum\\limits_{n=1}^{\\infty}\\dfrac{x^{n}}{n}$ 的收敛半径 $R=$ ______。",
+   "answer": "1",
+   "solution": "$\\lim\\limits_{n\\to\\infty}\\dfrac{a_{n+1}}{a_n}=\\lim\\dfrac{n}{n+1}=1$，故 $R=1$（$x=1$ 发散、$x=-1$ 收敛）。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277153,
+   "updated": 1793805950.6277156
+  },
+  {
+   "id": "MQ-0116",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_series_pow"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "若 $\\lim\\limits_{n\\to\\infty}\\left|\\dfrac{a_{n+1}}{a_n}\\right|=4$，则幂级数 $\\sum a_n x^{n}$ 的收敛半径 $R=$（　）。",
+   "answer": "B",
+   "solution": "比值法：$R=\\dfrac{1}{4}=\\dfrac14$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277163,
+   "updated": 1793805950.6277165,
+   "options": [
+    {
+     "key": "A",
+     "text": "4"
+    },
+    {
+     "key": "B",
+     "text": "$\\frac14$"
+    },
+    {
+     "key": "C",
+     "text": "2"
+    },
+    {
+     "key": "D",
+     "text": "$+\\infty$"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0117",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_multi"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "$z=x^{2}+y^{2}$，则 $\\dfrac{\\partial z}{\\partial x}=$ ______。",
+   "answer": "$2x$",
+   "solution": "对 $x$ 求偏导时把 $y$ 视为常数。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.627718,
+   "updated": 1793805950.6277182
+  },
+  {
+   "id": "MQ-0118",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_multi"
+   ],
+   "type": "choice",
+   "difficulty": "mid",
+   "stem": "关于偏导数与可微的关系，正确的是（　）。",
+   "answer": "A",
+   "solution": "偏导数连续 $\\Rightarrow$ 可微；可微 $\\Rightarrow$ 偏导存在；但偏导存在不足以保证可微。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.627719,
+   "updated": 1793805950.627719,
+   "options": [
+    {
+     "key": "A",
+     "text": "偏导数连续 ⇒ 可微"
+    },
+    {
+     "key": "B",
+     "text": "可微 ⇒ 偏导数连续"
+    },
+    {
+     "key": "C",
+     "text": "偏导数存在 ⇒ 可微"
+    },
+    {
+     "key": "D",
+     "text": "两者互不相关"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0119",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_multi_int"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "$\\iint\\limits_{D}dx\\,dy$，其中 $D$ 为单位圆盘 $x^2+y^2\\le1$，值为 ______。",
+   "answer": "$\\pi$",
+   "solution": "二重积分 $\\iint_D d\\sigma$ 的几何意义是区域 $D$ 的面积，单位圆面积为 $\\pi$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277204,
+   "updated": 1793805950.6277206
+  },
+  {
+   "id": "MQ-0120",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_multi_int"
+   ],
+   "type": "choice",
+   "difficulty": "basic",
+   "stem": "在计算二重积分时“交换积分次序”的主要目的是（　）。",
+   "answer": "A",
+   "solution": "某些次序下内层积分原函数难求或积分限复杂，交换次序可简化计算。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277213,
+   "updated": 1793805950.6277215,
+   "options": [
+    {
+     "key": "A",
+     "text": "简化积分计算"
+    },
+    {
+     "key": "B",
+     "text": "改变积分符号"
+    },
+    {
+     "key": "C",
+     "text": "判断收敛性"
+    },
+    {
+     "key": "D",
+     "text": "消除奇偶性"
+    }
+   ]
+  },
+  {
+   "id": "MQ-0121",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_ode"
+   ],
+   "type": "fill",
+   "difficulty": "basic",
+   "stem": "微分方程 $y'=y$ 的通解为 ______。",
+   "answer": "$y=Ce^{x}$",
+   "solution": "分离变量：$\\dfrac{dy}{y}=dx \\Rightarrow \\ln|y|=x+C_1 \\Rightarrow y=Ce^x$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277237,
+   "updated": 1793805950.6277237
+  },
+  {
+   "id": "MQ-0122",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_ode"
+   ],
+   "type": "solve",
+   "difficulty": "basic",
+   "stem": "求解初值问题 $y'+y=0,\\ y(0)=1$。",
+   "answer": "$y=e^{-x}$",
+   "solution": "通解 $y=Ce^{-x}$，代入 $y(0)=1$ 得 $C=1$，故 $y=e^{-x}$。",
+   "score": 10,
+   "source": "知源学伴种子题库",
+   "created": 1793805950.6277246,
+   "updated": 1793805950.627725
+  }
+ ],
+ "seq": 44,
+ "_说明": "大学数学种子题库（线性代数20+数学分析21/22，挂接知识图谱KP）。字段：id 稳定编号 / subject / kp_ids(首个为主考查点) / type(choice|fill|solve) / difficulty(basic|mid|hard) / stem($..$LaTeX) / options / answer / solution(解析) / score"
+}

@@ -162,6 +162,7 @@ const NAV = [
   {id:'english', icon:'✍️', label:'英语批改'},
   {id:'vocab', icon:'🔤', label:'四六级词汇'},
   {id:'paper', icon:'📝', label:'诊断卷'},
+  {id:'bank', icon:'🏦', label:'题库组卷'},
   {id:'plan', icon:'📅', label:'学习计划'},
   {id:'wrongbook', icon:'📕', label:'错题本'},
   {id:'notes', icon:'📖', label:'讲义生成'},
@@ -177,6 +178,7 @@ const TITLES = {
   english: ['英语批改', '四六级作文与段落翻译 · 评分标准逐句精批 + 范文'],
   vocab: ['四六级词汇检测', '基于开源词库（CET-4 7508词 / CET-6 5651词），错词自动进生词本'],
   paper: ['知识诊断卷', '按薄弱点自动命题 · 交卷自动批改，错因回写画像'],
+  bank: ['🏦 大学数学题库 · 组卷工作台', '本地化大学数学题库：浏览/录入/智能组卷，一键转为可批改试卷'],
   plan: ['📅 学习计划（定路线）', '输入目标与时间 → 逐日课程排期，按掌握度与前置依赖定制，完成发分'],
   wrongbook: ['错题本 · 自动归纳', '批改/测验的错题自动按知识点与错误类型归类，可标记掌握、一键巩固'],
   notes: ['讲义生成', '针对薄弱知识点生成个性化讲义，可结合校本资料'],
@@ -1602,6 +1604,231 @@ VIEWS.vocab = async () => {
         <td>${w.right||0} / ${w.wrong||0}</td><td class="muted">${fmtTime(w.last)}</td></tr>`).join('')}</table>`
       : '<span class="muted">生词本为空，做一次测验吧</span>';
   }
+};
+
+/* ================= 大学数学题库 · 组卷工作台 =================
+   参考 JudgePeach/math-question-bank（稳定ID / 知识点标注 / 只读Agent取题 / 候选两级读取） */
+VIEWS.bank = async () => {
+  $('#main').innerHTML += `<div id="bank-wrap"><div class="card muted">加载中…</div></div>`;
+  let CAP = null, _tab = 'browse';
+  const cap = async () => { if (!CAP) CAP = await api('bank/capabilities', {query:{sid: state.sid}}); return CAP; };
+  const typeCn = {choice: '选择题', fill: '填空题', solve: '解答题'};
+  const diffCn = {basic: '基础', mid: '中等', hard: '较难'};
+
+  async function render() {
+    const c = await cap();
+    const tabs = [['browse', '📚 题库浏览'], ['add', '➕ 录入题目'], ['compose', '🧾 组卷工作台']]
+      .map(([k, v]) => `<button class="btn small ${_tab === k ? '' : 'ghost'}" data-tab="${k}">${v}</button>`).join('');
+    $('#bank-wrap').innerHTML = `
+      <div class="card"><div class="rowline" style="justify-content:space-between;align-items:center">
+        <span>共 <b>${c.total}</b> 题 · 线代 ${c.counts_by_subject.linear_algebra || 0} / 数分 ${c.counts_by_subject.calculus || 0} ·
+        选择 ${c.counts_by_type.choice} / 填空 ${c.counts_by_type.fill} / 解答 ${c.counts_by_type.solve}</span>
+        <span class="rowline">${tabs}</span></div></div>
+      <div id="bank-body" class="mt"></div>`;
+    $('#bank-wrap').querySelectorAll('button[data-tab]').forEach(b => b.onclick = () => { _tab = b.dataset.tab; render(); });
+    if (_tab === 'browse') await renderBrowse(c);
+    else if (_tab === 'add') await renderAdd(c);
+    else await renderCompose(c);
+  }
+
+  /* ---- 题库浏览 ---- */
+  const _f = {subject: '', type: '', difficulty: '', q: '', page: 1};
+  async function renderBrowse(c) {
+    const body = $('#bank-body');
+    const subjOpts = [['', '全部科目']].concat(Object.entries(c.subjects)).map(([k, v]) =>
+      `<option value="${k}" ${_f.subject === k ? 'selected' : ''}>${v}</option>`).join('');
+    const typeOpts = [['', '全部题型']].concat(Object.entries(typeCn)).map(([k, v]) =>
+      `<option value="${k}" ${_f.type === k ? 'selected' : ''}>${v}</option>`).join('');
+    const diffOpts = [['', '全部难度']].concat(Object.entries(diffCn)).map(([k, v]) =>
+      `<option value="${k}" ${_f.difficulty === k ? 'selected' : ''}>${v}</option>`).join('');
+    body.innerHTML = `
+      <div class="card">
+        <div class="rowline">
+          <select id="bk-subject" style="width:130px">${subjOpts}</select>
+          <select id="bk-type" style="width:110px">${typeOpts}</select>
+          <select id="bk-diff" style="width:110px">${diffOpts}</select>
+          <input id="bk-q" placeholder="搜题干/答案/解析关键词" style="flex:1">
+          <button class="btn small" id="bk-go">搜索</button>
+        </div>
+        <div id="bk-list" class="mt"><div class="muted">加载中…</div></div>
+      </div>`;
+    const load = async () => {
+      _f.subject = $('#bk-subject').value; _f.type = $('#bk-type').value;
+      _f.difficulty = $('#bk-diff').value; _f.q = $('#bk-q').value.trim();
+      const r = await api('bank/search', {query: Object.assign({sid: state.sid, page: _f.page}, _f)});
+      $('#bk-list').innerHTML = (r.total ? `<div class="muted">共 ${r.total} 题 · 第 ${r.page} 页</div>` : '<div class="muted">没有匹配的题目</div>') +
+        r.items.map(it => `
+          <details class="bank-item" data-id="${it.id}">
+            <summary style="cursor:pointer"><b>${it.id}</b>
+              <span class="pill">${it.type_name}</span><span class="pill gray">${it.difficulty_name}</span>
+              ${it.kp_names.map(k => `<span class="pill amber">${esc(k)}</span>`).join('')}</summary>
+            <div class="muted bk-ex">${esc(it.stem_excerpt)}</div>
+            <div class="bk-full mt"></div>
+          </details>`).join('') +
+        (r.next_page ? `<div class="mt"><button class="btn small ghost" id="bk-more">下一页 →</button></div>` : '');
+      $('#bk-list').querySelectorAll('details.bank-item').forEach(d => d.addEventListener('toggle', async () => {
+        if (!d.open || d.dataset.loaded) return;
+        d.dataset.loaded = '1';
+        const it = await api('bank/item', {query: {sid: state.sid, id: d.dataset.id}});
+        d.querySelector('.bk-full').innerHTML = `<div class="md">${md(it.stem)}</div>
+          ${(it.options || []).length ? `<div class="mt">${it.options.map(o => `<div><b>${o.key}.</b> ${esc(o.text)}</div>`).join('')}</div>` : ''}
+          <details class="lesson-ex"><summary>显示答案与解析（教师视角）</summary>
+            <div class="answer-ref"><b>答案：</b>${esc(it.answer)}</div>
+            <div class="answer-ref md"><b>解析：</b>${md(it.solution || '（无）')}</div></details>
+          <div class="mt rowline"><button class="btn small danger" data-del="${it.id}">删除</button>
+            <span class="muted" style="font-size:12px">来源：${esc(it.source || '—')}</span></div>`;
+        const del = d.querySelector('[data-del]');
+        if (del) del.onclick = async () => {
+          if (!confirm('删除题目 ' + it.id + '？')) return;
+          await api('bank/delete', {method: 'POST', body: {sid: state.sid, id: it.id}});
+          toast('已删除');
+          render();
+        };
+      }));
+      const more = document.getElementById('bk-more');
+      if (more) more.onclick = () => { _f.page = r.next_page; load(); };
+    };
+    ['bk-subject', 'bk-type', 'bk-diff'].forEach(id => $('#' + id).onchange = () => { _f.page = 1; load(); });
+    $('#bk-go').onclick = () => { _f.page = 1; load(); };
+    $('#bk-q').addEventListener('keydown', e => { if (e.key === 'Enter') { _f.page = 1; load(); } });
+    await load();
+  }
+
+  /* ---- 录入题目 ---- */
+  async function renderAdd(c) {
+    const body = $('#bank-body');
+    const subjOpts = Object.entries(c.subjects).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+    body.innerHTML = `
+      <div class="card">
+        <h3>➕ 录入新题目（大学数学）</h3>
+        <div class="rowline mt">
+          <select id="ba-subject" style="width:140px">${subjOpts}</select>
+          <select id="ba-type" style="width:120px">${Object.entries(typeCn).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>
+          <select id="ba-diff" style="width:110px">${Object.entries(diffCn).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>
+        </div>
+        <label class="f mt">考查知识点（可多选，第一个为主考查点）</label>
+        <div id="ba-kps" class="rowline" style="flex-wrap:wrap"></div>
+        <label class="f mt">题干（数学式用 $...$ LaTeX）</label>
+        <textarea id="ba-stem" style="min-height:70px" placeholder="例：计算 $\\begin{vmatrix}2&1\\\\3&4\\end{vmatrix}$ 的值"></textarea>
+        <div id="ba-opts" class="mt">
+          <label class="f">选项（选择题）</label>
+          ${'ABCD'.split('').map(k => `<div class="rowline mt"><b style="width:20px">${k}.</b><input class="ba-opt" data-key="${k}" style="flex:1"></div>`).join('')}
+        </div>
+        <label class="f mt">答案</label>
+        <input id="ba-answer" style="width:100%" placeholder="选择题填选项字母；填空/解答填最终答案">
+        <label class="f mt">解析（可含 LaTeX）</label>
+        <textarea id="ba-solution" style="min-height:70px"></textarea>
+        <div class="rowline mt"><input id="ba-source" placeholder="来源（如：自编 / 期末真题）" style="flex:1">
+          <button class="btn" id="ba-save">保存入库</button></div>
+        <div class="muted mt" style="font-size:12px">入库后可用「组卷工作台」选入试卷。云端模式下新增题目随容器临时盘（重部署回退种子集）；本地模式永久保存。</div>
+      </div>`;
+    const catOf = () => CAP.catalog.filter(x => x.subject === $('#ba-subject').value);
+    const drawKps = () => {
+      $('#ba-kps').innerHTML = catOf().map(x =>
+        `<label class="checkline"><input type="checkbox" value="${x.id}"> ${esc(x.name)}</label>`).join('');
+    };
+    $('#ba-subject').onchange = drawKps;
+    $('#ba-type').onchange = () => { $('#ba-opts').style.display = $('#ba-type').value === 'choice' ? '' : 'none'; };
+    drawKps();
+    $('#ba-save').onclick = async () => {
+      const kps = [...$('#ba-kps').querySelectorAll('input:checked')].map(x => x.value);
+      const body = {sid: state.sid, subject: $('#ba-subject').value, type: $('#ba-type').value,
+        difficulty: $('#ba-diff').value, stem: $('#ba-stem').value.trim(),
+        answer: $('#ba-answer').value.trim(), solution: $('#ba-solution').value.trim(),
+        source: $('#ba-source').value.trim() || '教师录入', kp_ids: kps,
+        options: $('#ba-type').value === 'choice' ? [...$('#ba-opts').querySelectorAll('.ba-opt')].map(x => ({key: x.dataset.key, text: x.value.trim()})).filter(o => o.text) : []};
+      try {
+        const r = await api('bank/add', {method: 'POST', body});
+        toast('已入库：' + r.id);
+        _tab = 'browse'; render();
+      } catch (e) { toast(e.message, true); }
+    };
+  }
+
+  /* ---- 组卷工作台 ---- */
+  async function renderCompose(c) {
+    const body = $('#bank-body');
+    const subjOpts = Object.entries(c.subjects).map(([k, v]) => `<option value="${k}">${v}</option>`).join('');
+    body.innerHTML = `
+      <div class="card">
+        <h3>🧾 智能组卷</h3>
+        <div class="rowline mt">
+          <select id="bc-subject" style="width:150px">${subjOpts}</select>
+          <input id="bc-title" placeholder="试卷标题（默认自动）" style="flex:1">
+          <input id="bc-duration" type="number" value="90" min="15" max="240" style="width:90px" title="考试时长（分钟）">
+        </div>
+        <label class="f mt">考查知识点（不选 = 全库随机）</label>
+        <div id="bc-kps" class="rowline" style="flex-wrap:wrap"></div>
+        <label class="f mt">题型与数量（每题 10 分，难度梯度自动配：基础 40% / 中等 40% / 较难 20%）</label>
+        <div class="rowline">
+          ${Object.entries(typeCn).map(([k, v]) => `<span class="rowline"><b style="margin:0 4px">${v}</b>
+            <input id="bc-${k}" type="number" min="0" max="12" value="${k === 'choice' ? 4 : k === 'fill' ? 3 : 2}" style="width:64px"></span>`).join('')}
+          <button class="btn" id="bc-gen">✨ 生成试卷预览</button>
+        </div>
+        <div id="bc-preview" class="mt"></div>
+      </div>`;
+    const drawKps = () => {
+      $('#bc-kps').innerHTML = CAP.catalog.filter(x => x.subject === $('#bc-subject').value).map(x =>
+        `<label class="checkline"><input type="checkbox" value="${x.id}"> ${esc(x.name)}<span class="muted" style="font-size:11px">(${x.questions})</span></label>`).join('');
+    };
+    $('#bc-subject').onchange = drawKps;
+    drawKps();
+    let draft = null;
+    $('#bc-gen').onclick = async () => {
+      const counts = {choice: +$('#bc-choice').value || 0, fill: +$('#bc-fill').value || 0, solve: +$('#bc-solve').value || 0};
+      const kps = [...$('#bc-kps').querySelectorAll('input:checked')].map(x => x.value);
+      $('#bc-preview').innerHTML = '<div class="muted">组卷中…</div>';
+      try {
+        draft = await api('bank/compose', {method: 'POST', body: {sid: state.sid,
+          subject: $('#bc-subject').value, kp_ids: kps, counts,
+          duration: +$('#bc-duration').value || 90, title: $('#bc-title').value.trim()}});
+        drawSheet(false);
+      } catch (e) { $('#bc-preview').innerHTML = `<div class="muted">${esc(e.message)}</div>`; }
+    };
+    function drawSheet(teacher) {
+      if (!draft) return;
+      let n = 0;
+      const secHtml = draft.sections.map(sec => `
+        <div class="a4-sec"><b>${sec.type_name}</b>（共 ${sec.items.length} 题，${sec.note}）</div>
+        ${sec.items.map(it => {
+          n += 1;
+          const q = it.question;
+          return `<div class="a4-q"><b>${n}.</b> <span class="md">${md(q.stem)}</span>
+            ${(q.options || []).length ? `<div class="a4-opts">${q.options.map(o => `<span><b>${o.key}.</b> ${esc(o.text)}</span>`).join('　')}</div>` : ''}
+            ${teacher ? `<div class="a4-ans"><b>【答案】</b>${esc(q.answer)}${q.solution ? `<br><b>【解析】</b><span class="md">${md(q.solution)}</span>` : ''}</div>` : ''}
+            </div>`;
+        }).join('')}`).join('');
+      $('#bc-preview').innerHTML = `
+        <div class="rowline mt" style="justify-content:space-between">
+          <span class="rowline">
+            <button class="btn small ${teacher ? 'ghost' : ''}" id="bc-stu">👤 学生版</button>
+            <button class="btn small ${teacher ? '' : 'ghost'}" id="bc-tea">🧑‍🏫 教师版（含答案解析）</button>
+          </span>
+          <span class="rowline">
+            <button class="btn small" id="bc-print">🖨 打印 / 导出 PDF</button>
+            <button class="btn small" id="bc-topaper">📝 转为作答卷（自动批改+错题本）</button>
+          </span>
+        </div>
+        <div class="a4-sheet mt" id="a4-zone">
+          <div class="a4-head">${esc(draft.title)}<br>
+            <span style="font-size:12px">时长 ${draft.duration} 分钟 · 满分 ${draft.total_score} 分 · 共 ${draft.total_n} 题</span></div>
+          ${secHtml}
+          <div class="a4-end">—— 试卷结束 ——</div>
+        </div>`;
+      $('#bc-stu').onclick = () => drawSheet(false);
+      $('#bc-tea').onclick = () => drawSheet(true);
+      $('#bc-print').onclick = () => window.print();
+      $('#bc-topaper').onclick = async () => {
+        try {
+          const r = await api('bank/to_paper', {method: 'POST', body: {sid: state.sid, draft}});
+          toast('已转为作答卷，进入诊断卷列表');
+          location.hash = '#/paper/' + r.paper_id;
+        } catch (e) { toast(e.message, true); }
+      };
+    }
+  }
+
+  await render();
 };
 
 /* ================= 诊断卷 ================= */

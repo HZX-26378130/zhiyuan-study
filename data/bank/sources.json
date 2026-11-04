@@ -1,17 +1,159 @@
 {
-  "sources": [
-    {"name": "清华大学《数学》课程资料（THU-math-source）", "url": "https://github.com/mathsdream/THU-math-source", "tags": ["微积分", "线性代数", "复变函数", "概率统计", "讲义", "清华大学"], "note": "含微积分A/B/C、工科线性代数、复变、概率统计等讲义与试题"},
-    {"name": "南开大学数学学院历年试卷汇总（nku-sms-exams）", "url": "https://github.com/zawnpn/nku-sms-exams", "tags": ["试卷", "试题", "数学分析", "南开大学", "考试"], "note": "数学及相关学科历年考试试卷汇总"},
-    {"name": "高等数学真题讲义笔记（Advanced-Mathematics）", "url": "https://github.com/Night-Is-Young/Advanced-Mathematics", "tags": ["高等数学", "真题", "讲义", "笔记"], "note": "高等数学部分真题、讲义和笔记"},
-    {"name": "大学数学习题集（tomatobobot/Math）", "url": "https://github.com/tomatobobot/Math", "tags": ["习题集", "线性代数", "概率论", "离散数学"], "note": "小学到大学数学习题，含线代/离散/概率"},
-    {"name": "哈工大数学系复习笔记（mathmatics-note）", "url": "https://github.com/cbhua/mathmatics-note", "tags": ["笔记", "数学分析", "复习提纲", "哈尔滨工业大学"], "note": "本科课程复习笔记，侧重知识框架"},
-    {"name": "考研数学笔记（Didnelpsun/Math）", "url": "https://github.com/Didnelpsun/Math", "tags": ["考研数学", "高等数学", "线性代数", "笔记"], "note": "高数/线代/概率统计系统笔记"},
-    {"name": "北京航空航天大学 5系学习资料（网盘分享）", "url": "https://bhpan.buaa.edu.cn/link/AA49330B446E214CEE8D2748856FED364F", "tags": ["北京航空航天大学", "北航", "学习资料", "题库"], "note": "网盘分享需在浏览器中访问下载，下载后可通过校本资料库批量上传（支持.docx/.txt/.md）"},
-    {"name": "四六级历年真题站（CET4/CET6）", "url": "https://zhenti.burningvocabulary.cn/cet4", "tags": ["四六级", "真题", "作文", "翻译", "CET"], "note": "2012-2026年真题索引，含作文翻译"},
-    {"name": "MIT 18.06 线性代数（Gilbert Strang）", "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/", "tags": ["线性代数", "视频课", "MIT"], "note": "经典公开课与讲义"},
-    {"name": "MIT 18.01/18.02 微积分", "url": "https://ocw.mit.edu/courses/18-01-single-variable-calculus-fall-2006/", "tags": ["微积分", "数学分析", "MIT"], "note": "单变量/多变量微积分课程"},
-    {"name": "国家高等教育智慧教育平台", "url": "https://www.smartedu.cn/", "tags": ["课程", "教育部", "平台"], "note": "教育部官方课程平台"},
-    {"name": "中国大学MOOC", "url": "https://www.icourse163.org/", "tags": ["慕课", "课程", "大学"], "note": "高校公开慕课平台"},
-    {"name": "3Blue1Brown 线性代数/微积分本质", "url": "https://www.3blue1brown.com/topics/linear-algebra", "tags": ["可视化", "线性代数", "微积分"], "note": "几何直觉动画课程"}
-  ]
+ "sources": [
+  {
+   "name": "清华大学《数学》课程资料（THU-math-source）",
+   "url": "https://github.com/mathsdream/THU-math-source",
+   "tags": [
+    "微积分",
+    "线性代数",
+    "复变函数",
+    "概率统计",
+    "讲义",
+    "清华大学"
+   ],
+   "note": "含微积分A/B/C、工科线性代数、复变、概率统计等讲义与试题"
+  },
+  {
+   "name": "南开大学数学学院历年试卷汇总（nku-sms-exams）",
+   "url": "https://github.com/zawnpn/nku-sms-exams",
+   "tags": [
+    "试卷",
+    "试题",
+    "数学分析",
+    "南开大学",
+    "考试"
+   ],
+   "note": "数学及相关学科历年考试试卷汇总"
+  },
+  {
+   "name": "高等数学真题讲义笔记（Advanced-Mathematics）",
+   "url": "https://github.com/Night-Is-Young/Advanced-Mathematics",
+   "tags": [
+    "高等数学",
+    "真题",
+    "讲义",
+    "笔记"
+   ],
+   "note": "高等数学部分真题、讲义和笔记"
+  },
+  {
+   "name": "大学数学习题集（tomatobobot/Math）",
+   "url": "https://github.com/tomatobobot/Math",
+   "tags": [
+    "习题集",
+    "线性代数",
+    "概率论",
+    "离散数学"
+   ],
+   "note": "小学到大学数学习题，含线代/离散/概率"
+  },
+  {
+   "name": "哈工大数学系复习笔记（mathmatics-note）",
+   "url": "https://github.com/cbhua/mathmatics-note",
+   "tags": [
+    "笔记",
+    "数学分析",
+    "复习提纲",
+    "哈尔滨工业大学"
+   ],
+   "note": "本科课程复习笔记，侧重知识框架"
+  },
+  {
+   "name": "考研数学笔记（Didnelpsun/Math）",
+   "url": "https://github.com/Didnelpsun/Math",
+   "tags": [
+    "考研数学",
+    "高等数学",
+    "线性代数",
+    "笔记"
+   ],
+   "note": "高数/线代/概率统计系统笔记"
+  },
+  {
+   "name": "北京航空航天大学 5系学习资料（网盘分享）",
+   "url": "https://bhpan.buaa.edu.cn/link/AA49330B446E214CEE8D2748856FED364F",
+   "tags": [
+    "北京航空航天大学",
+    "北航",
+    "学习资料",
+    "题库"
+   ],
+   "note": "北航云盘(AnyShare)分享，已实访确认【永久有效】：根目录为「5系学习资料」文件夹，内按学期组织——大一上/大一下/大二上/大二下/大三上/大三下/大四/竞赛资料 8 个子文件夹，另有《写给学弟学妹》说明 txt。含宇航学院本科各课程讲义、试题与竞赛资料。匿名可浏览；整包下载需在网页勾选后点下载（未登录状态下打包下载未响应，建议登录后下载）。下载 zip 后可导入知源学伴校本资料库，试卷类 PDF 可抽题扩充数学/力学题库。"
+  },
+  {
+   "name": "四六级历年真题站（CET4/CET6）",
+   "url": "https://zhenti.burningvocabulary.cn/cet4",
+   "tags": [
+    "四六级",
+    "真题",
+    "作文",
+    "翻译",
+    "CET"
+   ],
+   "note": "2012-2026年真题索引，含作文翻译"
+  },
+  {
+   "name": "MIT 18.06 线性代数（Gilbert Strang）",
+   "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/",
+   "tags": [
+    "线性代数",
+    "视频课",
+    "MIT"
+   ],
+   "note": "经典公开课与讲义"
+  },
+  {
+   "name": "MIT 18.01/18.02 微积分",
+   "url": "https://ocw.mit.edu/courses/18-01-single-variable-calculus-fall-2006/",
+   "tags": [
+    "微积分",
+    "数学分析",
+    "MIT"
+   ],
+   "note": "单变量/多变量微积分课程"
+  },
+  {
+   "name": "国家高等教育智慧教育平台",
+   "url": "https://www.smartedu.cn/",
+   "tags": [
+    "课程",
+    "教育部",
+    "平台"
+   ],
+   "note": "教育部官方课程平台"
+  },
+  {
+   "name": "中国大学MOOC",
+   "url": "https://www.icourse163.org/",
+   "tags": [
+    "慕课",
+    "课程",
+    "大学"
+   ],
+   "note": "高校公开慕课平台"
+  },
+  {
+   "name": "3Blue1Brown 线性代数/微积分本质",
+   "url": "https://www.3blue1brown.com/topics/linear-algebra",
+   "tags": [
+    "可视化",
+    "线性代数",
+    "微积分"
+   ],
+   "note": "几何直觉动画课程"
+  },
+  {
+   "name": "MathBank 本地化数学题库与组卷排版工作台（JudgePeach）",
+   "url": "https://github.com/JudgePeach/math-question-bank",
+   "tags": [
+    "题库",
+    "组卷",
+    "数学",
+    "LaTeX",
+    "OCR",
+    "高中数学"
+   ],
+   "note": "373★ 本地化题库+组卷排版系统：稳定题目ID、知识点主辅标注、只读Agent取题接口、A4组卷导出。知源学伴题库组卷模块的设计参考（大学版实现）"
+  }
+ ]
 }

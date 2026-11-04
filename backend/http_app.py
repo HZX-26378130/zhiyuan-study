@@ -10,7 +10,7 @@ import time
 import urllib.parse
 from http.server import BaseHTTPRequestHandler
 
-from . import auth, daily, english, external, knowledge, llm, materials, memory, notes, paper, plan, points, qa, search, store, vocab, weekly, wrongbook
+from . import auth, bank, daily, english, external, knowledge, llm, materials, memory, notes, paper, plan, points, qa, search, store, vocab, weekly, wrongbook
 from . import admin, archive, metrics, pdftext
 
 # 静态资源目录：exe 打包后由启动器指向解压出来的资源目录
@@ -522,6 +522,70 @@ def _daily_get(ctx):
     return course
 
 
+# ---------- 大学数学题库 + 组卷工作台 ----------
+
+def _bank_capabilities(ctx):
+    return bank.capabilities()
+
+
+def _bank_search(ctx):
+    q = ctx['query'] or {}
+    return bank.search(subject=q.get('subject') or None, kp=q.get('kp') or None,
+                       qtype=q.get('type') or None, difficulty=q.get('difficulty') or None,
+                       q=q.get('q', ''), page=q.get('page', 1), size=q.get('size', 20))
+
+
+def _bank_item(ctx):
+    q = ctx['query'] or {}
+    it = bank.get_item(q.get('id', ''))
+    if not it:
+        raise ApiError(404, '题目不存在')
+    return it
+
+
+def _bank_add(ctx):
+    try:
+        return {'id': bank.add(ctx['body'] or {})}
+    except ValueError as e:
+        raise ApiError(400, str(e))
+
+
+def _bank_update(ctx):
+    b = ctx['body'] or {}
+    try:
+        return {'id': bank.update(b.get('id', ''), b)}
+    except ValueError as e:
+        raise ApiError(400, str(e))
+
+
+def _bank_delete(ctx):
+    b = ctx['body'] or {}
+    try:
+        bank.delete(b.get('id', ''))
+    except ValueError as e:
+        raise ApiError(404, str(e))
+    return {'ok': True}
+
+
+def _bank_compose(ctx):
+    b = ctx['body'] or {}
+    try:
+        return bank.compose(b.get('subject', 'linear_algebra'), kp_ids=b.get('kp_ids') or None,
+                            counts=b.get('counts') or {}, duration=b.get('duration', 90),
+                            title=b.get('title', ''), seed=b.get('seed'))
+    except ValueError as e:
+        raise ApiError(400, str(e))
+
+
+def _bank_to_paper(ctx):
+    b = ctx['body'] or {}
+    try:
+        paper = bank.to_paper(ctx['sid'], b.get('draft') or {})
+    except ValueError as e:
+        raise ApiError(400, str(e))
+    return {'paper_id': paper['id'], 'paper': paper}
+
+
 # ---------- 任务积分 ----------
 
 def _points_get(ctx):
@@ -987,6 +1051,14 @@ ROUTES = {
     ('POST', 'daily/generate'): _daily_generate,
     ('GET', 'daily/course'): _daily_get,
     ('GET', 'review/due'): lambda ctx: wrongbook.due_review(ctx['sid']),
+    ('GET', 'bank/capabilities'): _bank_capabilities,
+    ('GET', 'bank/search'): _bank_search,
+    ('GET', 'bank/item'): _bank_item,
+    ('POST', 'bank/add'): _bank_add,
+    ('POST', 'bank/update'): _bank_update,
+    ('POST', 'bank/delete'): _bank_delete,
+    ('POST', 'bank/compose'): _bank_compose,
+    ('POST', 'bank/to_paper'): _bank_to_paper,
     ('GET', 'points'): _points_get,
     ('POST', 'points/task'): _points_task_add,
     ('POST', 'points/task/toggle'): _points_task_toggle,

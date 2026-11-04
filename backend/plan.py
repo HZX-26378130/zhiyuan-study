@@ -104,11 +104,11 @@ def _llm_polish(sid, subject, draft, goal, exam_date, level):
     try:
         res = llm.chat_json([
             {'role': 'user', 'content':
-                '你是学习规划师。科目：%s；学生目标：%s；考试日期：%s；起点：%s。\n'
-                '下面是一份逐日计划的考点骨架（每天 kp_ids 固定，不可增删）。'
-                '请为每天润色：title（当天主题，一句话有吸引力）、'
-                'objectives（2-3条可验收的学习目标，具体到"会做什么"）。'
-                '只允许改 title/objectives/minutes，不得增删 kp_ids 或天数。'
+                '你是大学课程的学习规划师。科目：%s；学生目标：%s；考试日期：%s；起点水平：%s。\n'
+                '以下为逐日计划的考点骨架（每日 kp_ids 已固定，不得增删）。'
+                '请为每日计划润色：title（当日主题，一句话，表述规范）、'
+                'objectives（2-3 条可验收的学习目标，须具体描述"能够做什么"）。'
+                '仅允许修改 title/objectives/minutes，不得增删 kp_ids 或天数。'
                 '输出 JSON：{"days":[{"day":n,"title":"...","objectives":["..."],"minutes":n}]}\n\n'
                 '计划骨架：%s'
                 % (knowledge.subjects().get(subject, subject), goal or '掌握核心考点',

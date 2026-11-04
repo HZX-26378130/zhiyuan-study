@@ -58,8 +58,9 @@ def build(sid):
     if llm.available():
         try:
             out = llm.chat([
-                {'role': 'system', 'content': '你是学习督导师。根据学生的近7天学习数据写一份简短周报，'
-                                              '语气亲切、具体、可执行，不超过200字，结构：①本周亮点 ②薄弱信号 ③下周三个建议（编号）。不要空话。'},
+                {'role': 'system', 'content': '你是学习督导顾问。请根据学生近 7 天的学习数据撰写一份简短周报：'
+                                              '语气亲切、内容具体、建议可执行，全文不超过 200 字；'
+                                              '结构为 ①本周亮点 ②薄弱信号 ③下周建议三条（编号）。避免空泛表述。'},
                 {'role': 'user', 'content': facts},
             ], temperature=0.6, max_tokens=800)
             if out and out.strip():

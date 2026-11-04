@@ -16,6 +16,10 @@ from . import admin, archive, metrics, pdftext
 # 静态资源目录：exe 打包后由启动器指向解压出来的资源目录
 FRONTEND = os.path.abspath(os.environ.get('ZY_FRONTEND') or os.path.join(store.BASE, 'frontend'))
 
+# 安全加固：请求体上限（防内存型 DoS）与合法学生 ID 格式（防路径穿越）
+MAX_BODY = 64 * 1024 * 1024
+SID_RE = re.compile(r'^[A-Za-z0-9_-]{4,40}$')
+
 
 class ApiError(Exception):
     def __init__(self, status, msg):
@@ -738,6 +742,15 @@ def _config_save(ctx):
     # 兜底链：前端可视化编辑后整条覆盖（空数组 = 关闭兜底）
     if isinstance(nl.get('fallback'), list):
         llm_fields['fallback'] = _clean_fallback(nl['fallback'])
+    # SSRF 防护：云端多用户模式下，学生配置的所有请求地址（主通道/流式/兜底链）
+    # 均不得指向内网或本机地址（本地单机模式不受影响，允许访问本地 Ollama 等）
+    if auth.enabled():
+        from urllib.parse import urlparse
+        candidates = [llm_fields.get('base_url', ''), llm_fields.get('stream_url', '')] \
+            + [f.get('base_url', '') for f in llm_fields.get('fallback', [])]
+        for u in candidates:
+            if u and llm._host_private(urlparse(u).hostname or ''):
+                raise ApiError(400, '安全限制：云端模式不允许将 AI 请求指向内网或本机地址（%s）' % urlparse(u).hostname)
     ns = b.get('search') or {}
     search_fields = {}
     if 'provider' in ns and ns.get('provider') is not None:
@@ -1089,6 +1102,7 @@ class Handler(BaseHTTPRequestHandler):
         data = json.dumps(obj, ensure_ascii=False).encode('utf-8')
         self.send_response(status)
         self.send_header('Content-Type', 'application/json; charset=utf-8')
+        self.send_header('X-Content-Type-Options', 'nosniff')
         self.send_header('Content-Length', str(len(data)))
         self.end_headers()
         try:
@@ -1100,7 +1114,8 @@ class Handler(BaseHTTPRequestHandler):
         if path in ('/', '/index.html'):
             path = '/index.html'
         fp = os.path.normpath(os.path.join(FRONTEND, path.lstrip('/')))
-        if not fp.startswith(FRONTEND) or not os.path.isfile(fp):
+        # 路径穿越防护：必须落在 FRONTEND 目录内部（带分隔符校验，防止同名前缀目录绕过）
+        if fp != FRONTEND and not fp.startswith(FRONTEND + os.sep) or not os.path.isfile(fp):
             self._send_json(404, {'error': 'Not Found'})
             return
         ctype = mimetypes.guess_type(fp)[0] or 'application/octet-stream'
@@ -1120,6 +1135,7 @@ class Handler(BaseHTTPRequestHandler):
             data = f.read()
         self.send_response(200)
         self.send_header('Content-Type', ctype + ('; charset=utf-8' if ctype.startswith('text/') else ''))
+        self.send_header('X-Content-Type-Options', 'nosniff')
         self.send_header('Content-Length', str(len(data)))
         self.send_header('ETag', etag)
         self.send_header('Cache-Control', 'no-cache')
@@ -1155,11 +1171,13 @@ class Handler(BaseHTTPRequestHandler):
 
     def _read_body(self):
         ctype = self.headers.get('Content-Type', '')
+        length = int(self.headers.get('Content-Length', 0) or 0)
+        if length > MAX_BODY:
+            raise ApiError(413, '请求体过大（上限 64MB）')
         if 'multipart/form-data' in ctype:
             files, fields = self._parse_multipart()
             body = {k: v for k, v in fields}
             return body, files
-        length = int(self.headers.get('Content-Length', 0) or 0)
         if length <= 0:
             return {}, []
         try:
@@ -1170,12 +1188,16 @@ class Handler(BaseHTTPRequestHandler):
 
     def _serve_image(self, query):
         sid = query.get('sid', '')
+        if not SID_RE.match(sid or ''):
+            self._send_json(404, {'error': '图片不存在'})
+            return
         data, mime = store.get_image(sid, query.get('file', ''))
         if not data:
             self._send_json(404, {'error': '图片不存在'})
             return
         self.send_response(200)
         self.send_header('Content-Type', mime)
+        self.send_header('X-Content-Type-Options', 'nosniff')
         self.send_header('Content-Length', str(len(data)))
         self.send_header('Cache-Control', 'no-store')
         self.end_headers()
@@ -1281,13 +1303,15 @@ class Handler(BaseHTTPRequestHandler):
                 return
             if os.environ.get('ZY_DEBUG'):
                 print('[dispatch] %s %s' % (method, route_name), file=sys.stderr, flush=True)
-            body, files = self._read_body()
-            sid = query.get('sid') or (body.get('sid') if isinstance(body, dict) else '') or ''
-            ctx = {'sid': sid, 'query': query, 'body': body, 'files': files,
-                   'headers': self.headers,
-                   'client_ip': (self.client_address or ('?',))[0]}
-            llm.set_request_user(sid)   # 本请求的 LLM 配置按账号隔离（云端多用户 / 本地多档案通用）
             try:
+                body, files = self._read_body()   # 请求体过大时在此抛 413
+                sid = query.get('sid') or (body.get('sid') if isinstance(body, dict) else '') or ''
+                if sid and not SID_RE.match(sid):   # 路径穿越防护：sid 仅允许安全字符
+                    sid = ''
+                ctx = {'sid': sid, 'query': query, 'body': body, 'files': files,
+                       'headers': self.headers,
+                       'client_ip': (self.client_address or ('?',))[0]}
+                llm.set_request_user(sid)   # 本请求的 LLM 配置按账号隔离（云端多用户 / 本地多档案通用）
                 result = handler(ctx)
                 if os.environ.get('ZY_DEBUG'):
                     print('[done] %s %s' % (method, route_name), file=sys.stderr, flush=True)

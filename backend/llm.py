@@ -3,6 +3,7 @@
 未配置 API Key 时 available() 为 False，各模块自动降级为离线演示模式。"""
 import json
 import os
+import re
 import threading
 import time
 import urllib.request
@@ -139,6 +140,43 @@ def vision_available():
 
 class LLMError(Exception):
     pass
+
+
+def _host_private(host):
+    """判断主机名是否属于本机/内网/链路本地等受保护地址。"""
+    h = (host or '').strip().lower().rstrip('.')
+    if h in ('localhost', '127.0.0.1', '0.0.0.0', '::1', '[::1]',
+             'host.docker.internal', 'metadata.google.internal'):
+        return True
+    if h.endswith(('.local', '.internal', '.lan', '.home.arpa')):
+        return True
+    m = re.match(r'^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$', h)
+    if m:
+        a, b = int(m.group(1)), int(m.group(2))
+        if a in (0, 10, 127) or (a == 172 and 16 <= b <= 31) \
+                or (a == 192 and b == 168) or (a == 169 and b == 254) \
+                or (a == 100 and 64 <= b <= 127):
+            return True
+    if h.startswith('fd') or h.startswith('fe80'):   # IPv6 ULA / 链路本地
+        return True
+    return False
+
+
+def _guard_cloud_url(url):
+    """云端多用户模式下的 SSRF 防护：禁止把 AI 请求指向内网/本机地址。
+    本机单机模式不受影响（访问本地 Ollama 等属于正常用法）。"""
+    try:
+        from urllib.parse import urlparse
+        host = urlparse(url).hostname or ''
+        if not _host_private(host):
+            return
+        from . import auth as _auth
+        if _auth.enabled():
+            raise LLMError('安全限制：云端模式禁止将 AI 请求指向内网或本机地址')
+    except LLMError:
+        raise
+    except Exception:
+        pass  # 判定失败时放行，避免误伤正常调用
 
 
 def _keyless(cfg):
@@ -300,6 +338,7 @@ def _chat_once(cfg, messages, temperature=0.6, timeout=120, max_tokens=4000):
     if not cfg.get('api_key') and not _keyless(cfg):
         raise LLMError('未配置大模型 API Key（可在「⚙ 接入设置」选择免Key通道或填入 api_key）')
     url = _endpoint(cfg)
+    _guard_cloud_url(url)
     body = json.dumps({
         'model': cfg.get('model', 'glm-4-flash'),
         'messages': messages,
@@ -576,6 +615,8 @@ def chat_stream(messages, on_delta=None, temperature=0.6, timeout=120, max_token
     """流式对话：OpenAI 兼容 SSE，on_delta(chunk) 逐段回调；失败自动回退非流式。返回完整文本。"""
     cfg = load_config()['llm']
     url = _stream_url(cfg)
+    if url:
+        _guard_cloud_url(url)
     if not url or (not cfg.get('api_key') and not _keyless(cfg)):
         out = chat(messages, temperature=temperature, timeout=timeout, max_tokens=max_tokens)
         if on_delta:

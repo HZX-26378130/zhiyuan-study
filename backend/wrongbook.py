@@ -127,7 +127,7 @@ def generate_variants(sid, iid):
     if llm.available():
         try:
             data = llm.chat_json([
-                {'role': 'system', 'content': '你是出题助手。基于学生的错题，出2道考查同一知识点的变式题：数字/情境要变，考点不变，难度相当。'},
+                {'role': 'system', 'content': '你是一名大学数学命题教师。请基于学生的错题命制 2 道考查同一知识点的变式题：须改变数字与情境，保持考点与难度不变。'},
                 {'role': 'user', 'content': '知识点：%s\n原错题：%s\n学生答案：%s\n正确答案：%s\n错因提示：%s\n\n'
                                             '输出JSON：{"questions":[{"q":"变式题干","answer":"简短标准答案","note":"一句话点拨"}]}' % (
                                                 kp_name, it['stem'], it.get('your', ''), it.get('answer', ''), it.get('note', '')[:100])},
@@ -172,7 +172,7 @@ def submit_practice(sid, iid, idx, answer, self_correct=None):
         elif llm.available():
             try:
                 data = llm.chat_json([
-                    {'role': 'system', 'content': '你是阅卷老师。判断学生答案是否与标准答案等价（表达不同但意思/数值等价也算对）。'},
+                    {'role': 'system', 'content': '你是一名大学数学阅卷教师。请判断学生答案与标准答案是否等价（表述不同但含义或数值等价的，视为正确）。'},
                     {'role': 'user', 'content': '题目：%s\n标准答案：%s\n学生答案：%s\n\n'
                                                 '输出JSON：{"correct": true/false, "feedback": "一两句话点评，指出对在哪或错在哪"}' % (
                                                     v.get('q', ''), v.get('answer', ''), str(answer)[:200])},

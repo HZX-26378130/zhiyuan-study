@@ -977,8 +977,90 @@
    "source": "知源学伴种子题库",
    "created": 1793805950.6277246,
    "updated": 1793805950.627725
+  },
+  {
+   "id": "MQ-0046",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_matrix",
+    "la_rank"
+   ],
+   "type": "solve",
+   "difficulty": "comp",
+   "stem": "设 $A$ 为 $n$ 阶实矩阵，且 $A^{2}=A$（幂等矩阵）。证明：$r(A)+r(A-E)=n$。",
+   "answer": "$r(A)+r(A-E)=n$",
+   "solution": "证：一方面 $A+(E-A)=E$，由秩不等式 $r(A)+r(E-A)\\ge r(E)=n$，而 $r(E-A)=r(A-E)$，故 $r(A)+r(A-E)\\ge n$；另一方面 $A(E-A)=A-A^{2}=O$，由 Sylvester 不等式 $r(A)+r(E-A)\\le n$。两式联立即得 $r(A)+r(A-E)=n$。",
+   "score": 10,
+   "source": "学科竞赛水平示例题",
+   "created": 1793891140.9530404,
+   "updated": 1793891140.9530404
+  },
+  {
+   "id": "MQ-0047",
+   "subject": "linear_algebra",
+   "kp_ids": [
+    "la_diag",
+    "la_eigen"
+   ],
+   "type": "solve",
+   "difficulty": "comp",
+   "stem": "设 $A$ 为 $n$ 阶实矩阵，$A^{2}=E$。证明：$A$ 相似于对角矩阵 $\\mathrm{diag}(E_r,-E_{n-r})$，其中 $r=r(A+E)$。",
+   "answer": "$A \\sim \\mathrm{diag}(E_r,-E_{n-r})$，$r=r(A+E)$",
+   "solution": "证：由 $A^{2}=E$ 知 $A$ 的最小多项式整除 $(x-1)(x+1)$，无重根，故 $A$ 可相似对角化，特征值只能为 $1$ 或 $-1$。设属于 $1$ 的特征子空间维数为 $r_1$，则 $r(A+E)=n-\\dim N(A+E)=n-\\dim N\\big|_{\\lambda=-1}=n-(n-r_1)=r_1$，即 $r_1=r(A+E)$。于是 $A \\sim \\mathrm{diag}(E_{r},-E_{n-r})$，$r=r(A+E)$。",
+   "score": 10,
+   "source": "学科竞赛水平示例题",
+   "created": 1793891140.9530442,
+   "updated": 1793891140.9530442
+  },
+  {
+   "id": "MQ-0048",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_int_def"
+   ],
+   "type": "solve",
+   "difficulty": "comp",
+   "stem": "计算 $I=\\displaystyle\\int_{0}^{\\pi}\\frac{x\\sin x}{1+\\cos^{2}x}\\,dx$。",
+   "answer": "$\\dfrac{\\pi^{2}}{4}$",
+   "solution": "解：令 $x\\to\\pi-x$ 得 $I=\\int_{0}^{\\pi}\\dfrac{(\\pi-x)\\sin x}{1+\\cos^{2}x}dx$。两式相加：$2I=\\pi\\int_{0}^{\\pi}\\dfrac{\\sin x}{1+\\cos^{2}x}dx$。再令 $u=\\cos x$，$\\int_{0}^{\\pi}\\dfrac{\\sin x}{1+\\cos^{2}x}dx=\\int_{-1}^{1}\\dfrac{du}{1+u^{2}}=\\dfrac{\\pi}{2}$，故 $I=\\dfrac{\\pi^{2}}{4}$。",
+   "score": 10,
+   "source": "学科竞赛水平示例题",
+   "created": 1793891140.953046,
+   "updated": 1793891140.953046
+  },
+  {
+   "id": "MQ-0049",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_seq"
+   ],
+   "type": "solve",
+   "difficulty": "comp",
+   "stem": "设 $a>0$，求 $\\lim\\limits_{n\\to\\infty}n\\left(\\sqrt[n]{a}-1\\right)$。",
+   "answer": "$\\ln a$",
+   "solution": "解：$n\\left(a^{1/n}-1\\right)=n\\left(e^{(\\ln a)/n}-1\\right)=\\dfrac{e^{t}-1}{t}\\cdot\\ln a$（$t=\\dfrac{\\ln a}{n}\\to0$）。由重要极限 $\\lim_{t\\to0}\\dfrac{e^{t}-1}{t}=1$，故原极限为 $\\ln a$。",
+   "score": 10,
+   "source": "学科竞赛水平示例题",
+   "created": 1793891140.9530478,
+   "updated": 1793891140.9530478
+  },
+  {
+   "id": "MQ-0050",
+   "subject": "calculus",
+   "kp_ids": [
+    "ca_int_def"
+   ],
+   "type": "solve",
+   "difficulty": "comp",
+   "stem": "设 $f$ 在 $[a,b]$ 上连续，且 $\\displaystyle\\int_{a}^{b}f^{2}(x)\\,dx=0$。证明：$f(x)\\equiv 0$，$x\\in[a,b]$。",
+   "answer": "$f(x)\\equiv0$",
+   "solution": "证（反证）：若存在 $x_0\\in[a,b]$ 使 $f(x_0)\\ne0$，不妨 $f(x_0)>0$。由连续性存在 $\\delta>0$，使 $f(x)>f(x_0)/2>0$ 在 $[x_0-\\delta,\\,x_0+\\delta]\\cap[a,b]$ 上成立，于是 $\\int_a^b f^{2}dx \\ge \\int_{该区间} f^{2}dx > 0$，与 $\\int_a^b f^2 dx=0$ 矛盾。故 $f\\equiv0$。",
+   "score": 10,
+   "source": "学科竞赛水平示例题",
+   "created": 1793891140.9530501,
+   "updated": 1793891140.9530501
   }
  ],
- "seq": 44,
+ "seq": 50,
  "_说明": "大学数学种子题库（线性代数20+数学分析21/22，挂接知识图谱KP）。字段：id 稳定编号 / subject / kp_ids(首个为主考查点) / type(choice|fill|solve) / difficulty(basic|mid|hard) / stem($..$LaTeX) / options / answer / solution(解析) / score"
 }

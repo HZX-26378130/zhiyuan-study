@@ -1613,7 +1613,7 @@ VIEWS.bank = async () => {
   let CAP = null, _tab = 'browse';
   const cap = async () => { if (!CAP) CAP = await api('bank/capabilities', {query:{sid: state.sid}}); return CAP; };
   const typeCn = {choice: '选择题', fill: '填空题', solve: '解答题'};
-  const diffCn = {basic: '基础', mid: '中等', hard: '较难'};
+  const diffCn = {basic: '基础', mid: '中等', hard: '较难', comp: '竞赛'};
 
   async function render() {
     const c = await cap();
@@ -1759,10 +1759,10 @@ VIEWS.bank = async () => {
         </div>
         <label class="f mt">考查知识点（不选 = 全库随机）</label>
         <div id="bc-kps" class="rowline" style="flex-wrap:wrap"></div>
-        <label class="f mt">题型与数量（每题 10 分，难度梯度自动配：基础 40% / 中等 40% / 较难 20%）</label>
+        <label class="f mt">题型与数量（每题 10 分，难度梯度自动配：基础 35% / 中等 40% / 较难 20% / 竞赛 5%）</label>
         <div class="rowline">
           ${Object.entries(typeCn).map(([k, v]) => `<span class="rowline"><b style="margin:0 4px">${v}</b>
-            <input id="bc-${k}" type="number" min="0" max="12" value="${k === 'choice' ? 4 : k === 'fill' ? 3 : 2}" style="width:64px"></span>`).join('')}
+            <input id="bc-${k}" type="number" min="0" max="12" value="${k === 'choice' ? 4 : k === 'fill' ? 3 : k === 'solve' ? 2 : 0}" style="width:64px"></span>`).join('')}
           <button class="btn" id="bc-gen">✨ 生成试卷预览</button>
         </div>
         <div id="bc-preview" class="mt"></div>
@@ -1775,7 +1775,7 @@ VIEWS.bank = async () => {
     drawKps();
     let draft = null;
     $('#bc-gen').onclick = async () => {
-      const counts = {choice: +$('#bc-choice').value || 0, fill: +$('#bc-fill').value || 0, solve: +$('#bc-solve').value || 0};
+      const counts = {choice: +$('#bc-choice').value || 0, fill: +$('#bc-fill').value || 0, solve: +$('#bc-solve').value || 0, comp: +$('#bc-comp').value || 0};
       const kps = [...$('#bc-kps').querySelectorAll('input:checked')].map(x => x.value);
       $('#bc-preview').innerHTML = '<div class="muted">组卷中…</div>';
       try {

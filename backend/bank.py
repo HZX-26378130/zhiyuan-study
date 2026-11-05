@@ -17,8 +17,8 @@ _lock = threading.Lock()
 
 MATH_SUBJECTS = ('linear_algebra', 'calculus')
 TYPES = {'choice': '选择题', 'fill': '填空题', 'solve': '解答题'}
-DIFFS = {'basic': '基础', 'mid': '中等', 'hard': '较难'}
-GRADIENT = [('basic', 0.4), ('mid', 0.4), ('hard', 0.2)]
+DIFFS = {'basic': '基础', 'mid': '中等', 'hard': '较难', 'comp': '竞赛'}
+GRADIENT = [('basic', 0.35), ('mid', 0.4), ('hard', 0.2), ('comp', 0.05)]
 
 
 def _load():

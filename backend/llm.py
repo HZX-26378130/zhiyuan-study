@@ -162,17 +162,39 @@ def _host_private(host):
     return False
 
 
+_dns_cache = {}          # host -> (expires_ts, ips)
+_dns_lock = threading.Lock()
+
+
+def _resolved_ips(host):
+    """解析主机名并带 300s TTL 缓存（守卫每次请求都跑，避免 DNS 查询拖慢响应）。"""
+    now = time.time()
+    with _dns_lock:
+        hit = _dns_cache.get(host)
+        if hit and hit[0] > now:
+            return hit[1]
+    import socket
+    ips = {info[4][0] for info in socket.getaddrinfo(host, None)}
+    with _dns_lock:
+        _dns_cache[host] = (now + 300, ips)
+    return ips
+
+
 def _guard_cloud_url(url):
     """云端多用户模式下的 SSRF 防护：禁止把 AI 请求指向内网/本机地址。
-    本机单机模式不受影响（访问本地 Ollama 等属于正常用法）。"""
+    本机单机模式不受影响（访问本地 Ollama 等属于正常用法）。
+    含 DNS 解析后复检：公网域名若解析到内网 IP（DNS rebinding）同样拦截。"""
     try:
         from urllib.parse import urlparse
-        host = urlparse(url).hostname or ''
-        if not _host_private(host):
-            return
         from . import auth as _auth
-        if _auth.enabled():
+        if not _auth.enabled():
+            return
+        host = urlparse(url).hostname or ''
+        if _host_private(host):
             raise LLMError('安全限制：云端模式禁止将 AI 请求指向内网或本机地址')
+        for ip in _resolved_ips(host):
+            if _host_private(ip):
+                raise LLMError('安全限制：目标域名解析到内网地址（%s），已拦截' % ip)
     except LLMError:
         raise
     except Exception:
